@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Social &amp;utlet — Website Design Document</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #E8231A;
+    --dark: #0C0B0B;
+    --mid: #888;
+    --light: #f4f4f4;
+    --border: #ddd;
+    --wf-bg: #F8F8F8;
+    --wf-box: #E4E4E4;
+    --wf-img: #D0D0D0;
+    --wf-dark: #BBBABA;
+    --ann: #E8231A;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: #fff; color: #111; font-size: 14px; line-height: 1.6; }
+  h1,h2,h3,h4,h5 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* ── Print ── */
+  @media print {
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    body { font-size: 12px; }
+    .cover { min-height: auto; padding: 60px 48px; }
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+
+  /* ── Cover ── */
+  .cover {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 64px;
+  }
+  .cover-top { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 40px; height: 40px; background: var(--red); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: 13px;
+  }
+  .logo-name { font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 18px; font-weight: 600; }
+  .logo-name span { color: var(--red); }
+  .cover-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 80px 0; }
+  .cover-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid #333; color: #888; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.15em; padding: 6px 14px;
+    border-radius: 100px; margin-bottom: 32px; width: fit-content;
+  }
+  .cover-title { font-size: clamp(40px, 6vw, 72px); font-weight: 700; color: #fff; line-height: 1; letter-spacing: -0.03em; margin-bottom: 24px; }
+  .cover-title span { color: var(--red); }
+  .cover-sub { color: #555; font-size: 16px; max-width: 480px; line-height: 1.7; }
+  .cover-footer { display: flex; align-items: flex-end; justify-content: space-between; color: #444; font-size: 12px; }
+  .cover-meta { display: flex; flex-direction: column; gap: 4px; }
+  .cover-meta strong { color: #888; }
+  .doc-version { text-align: right; }
+
+  /* ── TOC ── */
+  .toc { background: var(--light); border-radius: 16px; padding: 40px; }
+  .toc h2 { font-size: 24px; margin-bottom: 24px; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .toc-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; background: #fff; border-radius: 8px;
+    border: 1px solid var(--border); text-decoration: none; color: #111;
+    transition: border-color 0.15s;
+  }
+  .toc-item:hover { border-color: var(--red); }
+  .toc-num { font-weight: 700; color: var(--red); font-family: 'Space Grotesk', sans-serif; min-width: 28px; }
+  .toc-label { font-size: 13px; }
+
+  /* ── Section headers ── */
+  .sec-header { margin-bottom: 40px; }
+  .sec-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--mid); margin-bottom: 8px; }
+  .sec-title { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; }
+  .sec-sub { color: #666; margin-top: 8px; font-size: 14px; line-height: 1.7; max-width: 600px; }
+
+  /* ── Wireframe atoms ── */
+  .wf-screen {
+    background: var(--wf-bg);
+    border: 1.5px solid #ccc;
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    position: relative;
+  }
+  /* Navbar strip */
+  .wf-nav {
+    background: var(--dark);
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    gap: 12px;
+  }
+  .wf-nav-logo {
+    width: 28px; height: 28px; background: var(--red); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #fff; font-weight: 700; flex-shrink: 0;
+  }
+  .wf-nav-links { display: flex; gap: 16px; }
+  .wf-nav-link { width: 40px; height: 8px; background: #444; border-radius: 4px; }
+  .wf-nav-cta { width: 72px; height: 26px; background: var(--red); border-radius: 100px; }
+  /* Generic box */
+  .wf-box { background: var(--wf-box); border-radius: 6px; }
+  .wf-box-dark { background: var(--wf-dark); border-radius: 6px; }
+  /* Image placeholder */
+  .wf-img {
+    background: var(--wf-img);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wf-img::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      linear-gradient(to bottom right, transparent calc(50% - 0.5px), #c8c8c8 calc(50% - 0.5px), #c8c8c8 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      linear-gradient(to top right, transparent calc(50% - 0.5px), #c8c8c8 calc(50% - 0.5px), #c8c8c8 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  }
+  .wf-img-label { font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; position: relative; z-index: 1; text-align: center; padding: 4px; }
+  /* Text placeholders */
+  .wf-h1 { height: 18px; background: #333; border-radius: 3px; }
+  .wf-h2 { height: 14px; background: #444; border-radius: 3px; }
+  .wf-h3 { height: 11px; background: #555; border-radius: 3px; }
+  .wf-text { height: 8px; background: var(--wf-box); border-radius: 3px; }
+  .wf-text-sm { height: 7px; background: var(--wf-dark); border-radius: 3px; }
+  .wf-label { height: 7px; width: 80px; background: var(--red); border-radius: 3px; opacity: 0.6; }
+  .wf-btn { height: 32px; background: var(--red); border-radius: 100px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .wf-btn-outline { height: 32px; border: 1.5px solid #ccc; border-radius: 100px; }
+  .wf-badge { height: 20px; background: #eee; border-radius: 100px; border: 1px solid #ddd; }
+  .wf-card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
+  .wf-card-dark { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 10px; padding: 14px; }
+  .wf-divider { height: 1px; background: #e0e0e0; }
+  .wf-accent-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; }
+  /* Section backgrounds in wireframe */
+  .wf-section { padding: 28px 24px; }
+  .wf-section-dark { padding: 28px 24px; background: #1a1a1a; }
+  .wf-section-mid { padding: 28px 24px; background: #F0F0F0; }
+  /* Grid helpers */
+  .wf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .wf-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .wf-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .wf-col-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+  .wf-col-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+  .wf-flex { display: flex; gap: 10px; align-items: flex-start; }
+  .wf-flex-center { display: flex; gap: 10px; align-items: center; }
+  /* Footer strip */
+  .wf-footer { background: #111; padding: 20px 24px; }
+
+  /* ── Annotations ── */
+  .ann-wrap { position: relative; }
+  .ann-list { margin-top: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .ann-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.5; }
+  .ann-num {
+    width: 22px; height: 22px; min-width: 22px; background: var(--red); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; font-family: 'Space Grotesk', sans-serif;
+  }
+  .ann-text { color: #444; padding-top: 2px; }
+  .ann-text strong { color: #111; }
+
+  /* ── Inline annotation dot on wireframe ── */
+  .ann-dot {
+    display: inline-flex; width: 18px; height: 18px; min-width: 18px;
+    background: var(--red); color: #fff; border-radius: 50%;
+    font-size: 9px; font-weight: 700; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* ── Style guide ── */
+  .color-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+  .color-swatch { border-radius: 10px; overflow: hidden; border: 1px solid #eee; width: 140px; }
+  .color-block { height: 80px; }
+  .color-info { padding: 10px 12px; }
+  .color-name { font-weight: 600; font-size: 13px; }
+  .color-hex { font-size: 11px; color: #888; font-family: monospace; }
+  .color-role { font-size: 11px; color: #999; margin-top: 2px; }
+  .type-sample { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #eee; }
+  .type-sample:last-child { border-bottom: none; }
+  .type-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 6px; }
+
+  /* ── Site map ── */
+  .sitemap { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .sm-root {
+    background: var(--dark); color: #fff; border-radius: 10px;
+    padding: 12px 28px; font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600; font-size: 14px; position: relative;
+  }
+  .sm-connector-down { width: 2px; height: 40px; background: #ddd; }
+  .sm-connector-h { height: 2px; background: #ddd; position: absolute; top: 50%; }
+  .sm-row { display: flex; gap: 0; align-items: center; position: relative; }
+  .sm-h-line { height: 2px; background: #ddd; }
+  .sm-page {
+    border: 1.5px solid #ddd; border-radius: 10px; padding: 10px 18px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+    background: #fff; text-align: center; white-space: nowrap;
+  }
+  .sm-page.active { border-color: var(--red); color: var(--red); }
+  .sm-pages-wrap { display: flex; gap: 0; align-items: flex-start; position: relative; }
+  .sm-pages { display: flex; gap: 8px; }
+  .sm-v-line { width: 2px; background: #ddd; }
+
+  /* ── Page intro ── */
+  .page-intro {
+    background: var(--light); border-radius: 12px; padding: 20px 24px;
+    display: flex; gap: 16px; align-items: flex-start; margin-bottom: 32px;
+  }
+  .page-intro-num {
+    width: 40px; height: 40px; min-width: 40px; background: var(--dark); color: #fff;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;
+  }
+  .page-intro-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .page-intro-desc { font-size: 13px; color: #666; line-height: 1.6; }
+  .page-intro-url { font-size: 11px; color: #999; font-family: monospace; margin-top: 6px; }
+
+  /* ── Spacing ── */
+  .mt-4 { margin-top: 4px; }
+  .mt-6 { margin-top: 6px; }
+  .mt-8 { margin-top: 8px; }
+  .mt-10 { margin-top: 10px; }
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-20 { margin-top: 20px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-12 { margin-bottom: 12px; }
+  .w-full { width: 100%; }
+  .w-60 { width: 60%; }
+  .w-50 { width: 50%; }
+  .w-40 { width: 40%; }
+  .w-30 { width: 30%; }
+  .w-20 { width: 20%; }
+
+  /* ── Nav bar ── */
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 50; background: #fff;
+    border-bottom: 1px solid var(--border); padding: 12px 32px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .sticky-nav a { font-size: 12px; color: #666; text-decoration: none; font-weight: 500; }
+  .sticky-nav a:hover { color: var(--red); }
+  .sticky-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; margin-right: 8px; }
+  .sticky-logo span { color: var(--red); }
+  .print-btn {
+    margin-left: auto; background: var(--dark); color: #fff; border: none;
+    padding: 7px 16px; border-radius: 100px; font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+  }
+  .print-btn:hover { background: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- Sticky Nav (screen only) -->
+<nav class="sticky-nav no-print">
+  <span class="sticky-logo">Social <span>&amp;</span>utlet</span>
+  <a href="#sitemap">Site Map</a>
+  <a href="#home">Home</a>
+  <a href="#strategy">Strategy</a>
+  <a href="#services">Services</a>
+  <a href="#casestudy">Case Study</a>
+  <a href="#contact">Contact</a>
+  <a href="#styleguide">Style Guide</a>
+  <button class="print-btn" onclick="window.print()">Save as PDF</button>
+</nav>
+
+<!-- ════════════════════════════════ COVER ════════════════════════════════ -->
+<div class="cover page-break">
+  <div class="cover-top">
+    <div class="logo-mark">S&amp;</div>
+    <span class="logo-name">Social <span>&amp;</span>utlet</span>
+  </div>
+
+  <div class="cover-body">
+    <div class="cover-tag">
+      <span style="width:6px;height:6px;background:var(--red);border-radius:50%;display:inline-block"></span>
+      Website Design Document — v1.0
+    </div>
+    <div class="cover-title">
+      Website<br />
+      <span>Wireframes</span><br />
+      &amp; Structure
+    </div>
+    <p class="cover-sub">
+      This document outlines the page structure, content layout, and design direction
+      for the Social &amp;utlet portfolio website. It is intended to align on content
+      placement before visual development.
+    </p>
+  </div>
+
+  <div class="cover-footer">
+    <div class="cover-meta">
+      <div><strong>Project</strong> &nbsp; Social &amp;utlet — Brand Website</div>
+      <div><strong>Pages</strong> &nbsp; 5 (Home · Strategy · Services · Case Study · Contact)</div>
+      <div><strong>Tech</strong> &nbsp; Next.js 16 · Tailwind CSS · Framer Motion</div>
+    </div>
+    <div class="doc-version">
+      <div>Prepared for client review</div>
+      <div style="margin-top:4px;color:#333">2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ TABLE OF CONTENTS ════════════════════════════════ -->
+<div class="section page-break" id="toc">
+  <div class="container">
+    <div class="toc">
+      <h2>Contents</h2>
+      <div class="toc-grid">
+        <a class="toc-item" href="#sitemap"><span class="toc-num">01</span><span class="toc-label">Site Architecture</span></a>
+        <a class="toc-item" href="#home"><span class="toc-num">02</span><span class="toc-label">Home Page</span></a>
+        <a class="toc-item" href="#strategy"><span class="toc-num">03</span><span class="toc-label">Strategy Page</span></a>
+        <a class="toc-item" href="#services"><span class="toc-num">04</span><span class="toc-label">Services Page</span></a>
+        <a class="toc-item" href="#casestudy"><span class="toc-num">05</span><span class="toc-label">Case Study Page</span></a>
+        <a class="toc-item" href="#contact"><span class="toc-num">06</span><span class="toc-label">Contact Us Page</span></a>
+        <a class="toc-item" href="#styleguide"><span class="toc-num">07</span><span class="toc-label">Style Guide</span></a>
+        <a class="toc-item" href="#content-notes"><span class="toc-num">08</span><span class="toc-label">Content Checklist</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ SITE MAP ════════════════════════════════ -->
+<div class="section page-break" id="sitemap">
+  <div class="container">
+    <div class="sec-header">
+      <div class="sec-tag">01 — Architecture</div>
+      <div class="sec-title">Site Structure</div>
+      <p class="sec-sub">Five core pages, all accessible from the persistent top navigation. The Services page includes a mega-dropdown menu breaking down three service categories.</p>
+    </div>
+
+    <!-- Visual Sitemap -->
+    <div style="border:1.5px solid var(--border);border-radius:16px;padding:48px 40px;background:var(--light);">
+      <!-- Root -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="background:var(--dark);color:#fff;border-radius:10px;padding:12px 32px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;">
+          socialoutlet.com
+        </div>
+        <div style="width:2px;height:40px;background:#ccc;"></div>
+        <!-- Navigation bar representation -->
+        <div style="width:100%;display:flex;align-items:flex-start;gap:0;">
+          <!-- Horizontal connector -->
+          <div style="flex:1;height:2px;background:#ccc;margin-top:0;align-self:flex-start;margin-top:20px;"></div>
+          <!-- Pages -->
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+
+            <!-- Home -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+              <div style="width:2px;height:20px;background:#ccc;"></div>
+              <div style="border:2px solid var(--red);border-radius:10px;padding:10px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--red);background:#fff;">
+                Home<br/><span style="font-size:10px;font-weight:400;color:#999;">/</span>
+              </div>
+            </div>
+
+            <!-- Services -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+              <div style="width:2px;height:20px;background:#ccc;"></div>
+              <div style="border:1.5px solid #ccc;border-radius:10px;padding:10px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;background:#fff;text-align:center;">
+                Services<br/><span style="font-size:10px;font-weight:400;color:#999;">/services</span>
+              </div>
+              <div style="width:2px;height:20px;background:#ccc;"></div>
+              <!-- Dropdown sub-items -->
+              <div style="border:1px dashed #ccc;border-radius:8px;padding:10px 12px;background:#fff;font-size:10px;color:#666;font-family:'Inter',sans-serif;line-height:1.9;text-align:center;">
+                Organic Marketing<br/>
+                Demand Generation<br/>
+                Creative
+              </div>
+            </div>
+
+            <!-- Strategy -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+              <div style="width:2px;height:20px;background:#ccc;"></div>
+              <div style="border:1.5px solid #ccc;border-radius:10px;padding:10px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;background:#fff;text-align:center;">
+                Strategy<br/><span style="font-size:10px;font-weight:400;color:#999;">/strategy</span>
+              </div>
+            </div>
+
+            <!-- Case Study -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+              <div style="width:2px;height:20px;background:#ccc;"></div>
+              <div style="border:1.5px solid #ccc;border-radius:10px;padding:10px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;background:#fff;text-align:center;">
+                Case Study<br/><span style="font-size:10px;font-weight:400;color:#999;">/case-study</span>
+              </div>
+            </div>
+
+            <!-- Contact -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+              <div style="width:2px;height:20px;background:#ccc;"></div>
+              <div style="border:1.5px solid #ccc;border-radius:10px;padding:10px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;background:#fff;text-align:center;">
+                Contact<br/><span style="font-size:10px;font-weight:400;color:#999;">/contact</span>
+              </div>
+            </div>
+
+          </div>
+          <div style="flex:1;height:2px;background:#ccc;margin-top:20px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation notes -->
+    <div class="ann-list" style="margin-top:24px;">
+      <div class="ann-item"><div class="ann-num">N</div><div class="ann-text"><strong>Global Navbar</strong> — Sticky, transparent on scroll, dark on scroll. Contains logo, nav links, Services dropdown, and a "Get Started" CTA button.</div></div>
+      <div class="ann-item"><div class="ann-num">N</div><div class="ann-text"><strong>Global Footer</strong> — CTA band ("Let's build something remarkable"), brand links, social icons, copyright.</div></div>
+      <div class="ann-item"><div class="ann-num">N</div><div class="ann-text"><strong>Services Mega-Menu</strong> — Hovering "Services" reveals a 3-column dropdown with all service sub-categories.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 1: HOME ════════════════════════════════ -->
+<div class="section page-break" id="home">
+  <div class="container">
+    <div class="page-intro">
+      <div class="page-intro-num">01</div>
+      <div>
+        <div class="page-intro-title">Home Page</div>
+        <div class="page-intro-desc">The primary landing page. Communicates the brand proposition immediately, showcases all three service pillars, a 4-step process, and social proof via stats. Ends with a strong CTA.</div>
+        <div class="page-intro-url">URL: socialoutlet.com/</div>
+      </div>
+    </div>
+
+    <div class="wf-screen">
+      <!-- Navbar -->
+      <div class="wf-nav">
+        <div style="display:flex;align-items:center;gap:8px;"><div class="wf-nav-logo">S&amp;</div><div style="width:80px;height:8px;background:#555;border-radius:4px;"></div></div>
+        <div class="wf-nav-links"><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div></div>
+        <div class="wf-nav-cta"></div>
+      </div>
+
+      <!-- HERO -->
+      <div class="wf-section-dark" style="padding:48px 24px;">
+        <div class="wf-grid-2" style="gap:24px;align-items:center;">
+          <div>
+            <div class="wf-badge" style="width:160px;height:22px;margin-bottom:16px;background:#2a2a2a;border-color:#333;"></div>
+            <div class="wf-h1" style="width:90%;margin-bottom:8px;height:22px;background:#eee;"></div>
+            <div class="wf-h1" style="width:70%;margin-bottom:8px;height:22px;background:var(--red);opacity:0.7;"></div>
+            <div class="wf-h1" style="width:50%;margin-bottom:20px;height:22px;background:#2a2a2a;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:6px;background:#444;"></div>
+            <div class="wf-text" style="width:85%;margin-bottom:6px;background:#444;"></div>
+            <div class="wf-text" style="width:70%;margin-bottom:20px;background:#444;"></div>
+            <div style="display:flex;gap:10px;">
+              <div class="wf-btn" style="width:160px;">Primary CTA</div>
+              <div class="wf-btn-outline" style="width:140px;"></div>
+            </div>
+          </div>
+          <div class="wf-img" style="height:260px;border-radius:12px;">
+            <div class="wf-img-label">Hero Image<br/>800×1000px</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:24px;flex-direction:column;align-items:center;gap:4px;">
+          <div style="width:1px;height:32px;background:#333;"></div>
+          <div style="width:40px;height:7px;background:#333;border-radius:4px;"></div>
+        </div>
+      </div>
+
+      <!-- STATS BAR -->
+      <div class="wf-divider"></div>
+      <div style="padding:0;background:#fff;">
+        <div class="wf-grid-4" style="gap:0;">
+          <div style="padding:20px 16px;border-right:1px solid #eee;">
+            <div style="height:28px;background:#111;border-radius:4px;width:60%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:80%;"></div>
+          </div>
+          <div style="padding:20px 16px;border-right:1px solid #eee;">
+            <div style="height:28px;background:#111;border-radius:4px;width:50%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:80%;"></div>
+          </div>
+          <div style="padding:20px 16px;border-right:1px solid #eee;">
+            <div style="height:28px;background:#111;border-radius:4px;width:55%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:75%;"></div>
+          </div>
+          <div style="padding:20px 16px;">
+            <div style="height:28px;background:#111;border-radius:4px;width:45%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:80%;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-divider"></div>
+
+      <!-- SERVICES -->
+      <div class="wf-section">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;">
+          <div>
+            <div class="wf-label" style="margin-bottom:8px;"></div>
+            <div class="wf-h2" style="width:200px;margin-bottom:5px;height:16px;background:#222;"></div>
+            <div class="wf-h2" style="width:140px;height:16px;background:#222;"></div>
+          </div>
+          <div style="width:70px;height:8px;background:#ccc;border-radius:4px;"></div>
+        </div>
+        <div class="wf-grid-3">
+          <div class="wf-card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:14px;">
+              <div style="width:32px;height:32px;background:#eee;border-radius:8px;"></div>
+              <div style="width:20px;height:20px;background:#f0f0f0;border-radius:4px;"></div>
+            </div>
+            <div class="wf-h3" style="width:80%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:12px;"></div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:80%;"></div></div>
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:70%;"></div></div>
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+            </div>
+            <div style="width:80px;height:7px;background:var(--red);border-radius:4px;opacity:0.7;"></div>
+          </div>
+          <div class="wf-card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:14px;">
+              <div style="width:32px;height:32px;background:#eee;border-radius:8px;"></div>
+              <div style="width:20px;height:20px;background:#f0f0f0;border-radius:4px;"></div>
+            </div>
+            <div class="wf-h3" style="width:80%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:85%;margin-bottom:12px;"></div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:80%;"></div></div>
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:65%;"></div></div>
+            </div>
+            <div style="width:80px;height:7px;background:var(--red);border-radius:4px;opacity:0.7;"></div>
+          </div>
+          <div class="wf-card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:14px;">
+              <div style="width:32px;height:32px;background:#eee;border-radius:8px;"></div>
+              <div style="width:20px;height:20px;background:#f0f0f0;border-radius:4px;"></div>
+            </div>
+            <div class="wf-h3" style="width:80%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:12px;"></div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:80%;"></div></div>
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:70%;"></div></div>
+              <div style="display:flex;align-items:center;gap:5px;"><div class="wf-accent-dot" style="width:4px;height:4px;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+            </div>
+            <div style="width:80px;height:7px;background:var(--red);border-radius:4px;opacity:0.7;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROCESS -->
+      <div class="wf-section-mid">
+        <div style="margin-bottom:20px;">
+          <div class="wf-label" style="margin-bottom:8px;"></div>
+          <div class="wf-h2" style="width:220px;margin-bottom:5px;height:16px;background:#222;"></div>
+        </div>
+        <div class="wf-grid-4">
+          <div><div style="height:32px;width:32px;background:#ddd;border-radius:4px;margin-bottom:10px;"></div><div class="wf-h3" style="width:60%;margin-bottom:8px;"></div><div class="wf-text" style="width:100%;margin-bottom:4px;"></div><div class="wf-text" style="width:85%;"></div></div>
+          <div><div style="height:32px;width:32px;background:#ddd;border-radius:4px;margin-bottom:10px;"></div><div class="wf-h3" style="width:60%;margin-bottom:8px;"></div><div class="wf-text" style="width:100%;margin-bottom:4px;"></div><div class="wf-text" style="width:85%;"></div></div>
+          <div><div style="height:32px;width:32px;background:#ddd;border-radius:4px;margin-bottom:10px;"></div><div class="wf-h3" style="width:60%;margin-bottom:8px;"></div><div class="wf-text" style="width:100%;margin-bottom:4px;"></div><div class="wf-text" style="width:85%;"></div></div>
+          <div><div style="height:32px;width:32px;background:#ddd;border-radius:4px;margin-bottom:10px;"></div><div class="wf-h3" style="width:60%;margin-bottom:8px;"></div><div class="wf-text" style="width:100%;margin-bottom:4px;"></div><div class="wf-text" style="width:85%;"></div></div>
+        </div>
+      </div>
+
+      <!-- WHY US -->
+      <div class="wf-section">
+        <div class="wf-grid-2" style="gap:20px;align-items:center;">
+          <div>
+            <div class="wf-label" style="margin-bottom:8px;"></div>
+            <div class="wf-h2" style="width:180px;margin-bottom:5px;height:16px;background:#222;"></div>
+            <div class="wf-h2" style="width:200px;margin-bottom:5px;height:16px;background:#222;"></div>
+            <div class="wf-h2" style="width:100px;margin-bottom:14px;height:16px;background:var(--red);opacity:0.6;"></div>
+            <div class="wf-text" style="margin-bottom:4px;width:100%;"></div>
+            <div class="wf-text" style="margin-bottom:4px;width:90%;"></div>
+            <div class="wf-text" style="margin-bottom:16px;width:80%;"></div>
+            <div class="wf-btn-outline" style="width:140px;height:28px;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:center;background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:10px 12px;"><div class="wf-accent-dot"></div><div class="wf-text" style="flex:1;"></div></div>
+            <div style="display:flex;gap:8px;align-items:center;background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:10px 12px;"><div class="wf-accent-dot"></div><div class="wf-text" style="flex:1;"></div></div>
+            <div style="display:flex;gap:8px;align-items:center;background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:10px 12px;"><div class="wf-accent-dot"></div><div class="wf-text" style="flex:1;"></div></div>
+            <div style="display:flex;gap:8px;align-items:center;background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:10px 12px;"><div class="wf-accent-dot"></div><div class="wf-text" style="flex:1;"></div></div>
+            <div style="display:flex;gap:8px;align-items:center;background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:10px 12px;"><div class="wf-accent-dot"></div><div class="wf-text" style="flex:1;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA BAND -->
+      <div class="wf-section-dark" style="text-align:center;padding:32px 24px;">
+        <div class="wf-label" style="margin:0 auto 12px;"></div>
+        <div class="wf-h1" style="width:320px;margin:0 auto 6px;background:#eee;height:20px;"></div>
+        <div class="wf-h1" style="width:240px;margin:0 auto 16px;background:#eee;height:20px;"></div>
+        <div class="wf-text" style="width:280px;margin:0 auto 6px;background:#444;"></div>
+        <div class="wf-text" style="width:240px;margin:0 auto 20px;background:#444;"></div>
+        <div class="wf-btn" style="width:160px;margin:0 auto;height:36px;">Primary CTA</div>
+      </div>
+
+      <!-- FOOTER STRIP -->
+      <div class="wf-footer">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;">
+          <div><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><div class="wf-nav-logo" style="width:24px;height:24px;font-size:8px;">S&amp;</div><div style="width:80px;height:7px;background:#555;border-radius:4px;"></div></div><div class="wf-text" style="width:80%;background:#333;margin-bottom:4px;"></div><div class="wf-text" style="width:70%;background:#333;"></div></div>
+          <div><div class="wf-text" style="width:60%;background:#555;margin-bottom:10px;"></div><div class="wf-text" style="width:80%;background:#333;margin-bottom:6px;"></div><div class="wf-text" style="width:75%;background:#333;margin-bottom:6px;"></div><div class="wf-text" style="width:70%;background:#333;"></div></div>
+          <div><div class="wf-text" style="width:60%;background:#555;margin-bottom:10px;"></div><div class="wf-text" style="width:80%;background:#333;margin-bottom:6px;"></div><div class="wf-text" style="width:75%;background:#333;margin-bottom:6px;"></div><div class="wf-text" style="width:70%;background:#333;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Annotations -->
+    <div class="ann-list">
+      <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Hero — 2-column layout.</strong> Left: Brand headline, tagline, and two CTAs. Right: Hero image slot (team photo / brand visual, 800×1000px recommended).</div></div>
+      <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Stats Bar.</strong> 4 animated counters: Brands Scaled, Avg ROAS, Coverage, Years of Expertise. Numbers animate up when scrolled into view.</div></div>
+      <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>3 Service Cards.</strong> Organic Marketing / Demand Generation / Creative. Each card has icon, title, description, 4 sub-services, and a "Learn More" link.</div></div>
+      <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>4-Step Process.</strong> Discover → Strategise → Execute → Scale. Each step reveals with a staggered animation on scroll.</div></div>
+      <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Why Us.</strong> Left: headline copy. Right: 6 checklist items with icons (Full-funnel, Data-first, Dedicated teams, etc).</div></div>
+      <div class="ann-item"><div class="ann-num">6</div><div class="ann-text"><strong>Bottom CTA Band.</strong> Dark section with headline and primary "Let's Talk" button directing to Contact page.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 2: STRATEGY ════════════════════════════════ -->
+<div class="section page-break" id="strategy">
+  <div class="container">
+    <div class="page-intro">
+      <div class="page-intro-num">02</div>
+      <div>
+        <div class="page-intro-title">Strategy Page</div>
+        <div class="page-intro-desc">Communicates the agency's thinking and approach. Establishes credibility and differentiates the methodology — from data intelligence to continuous iteration. Ends with a call to book a strategy call.</div>
+        <div class="page-intro-url">URL: socialoutlet.com/strategy</div>
+      </div>
+    </div>
+
+    <div class="wf-screen">
+      <div class="wf-nav"><div style="display:flex;align-items:center;gap:8px;"><div class="wf-nav-logo">S&amp;</div></div><div class="wf-nav-links"><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div></div><div class="wf-nav-cta"></div></div>
+
+      <!-- HERO -->
+      <div class="wf-section-dark" style="padding:40px 24px 32px;">
+        <div class="wf-label" style="margin-bottom:12px;"></div>
+        <div class="wf-h1" style="width:70%;margin-bottom:6px;height:20px;background:#eee;"></div>
+        <div class="wf-h1" style="width:55%;margin-bottom:6px;height:20px;background:var(--red);opacity:0.7;"></div>
+        <div class="wf-h1" style="width:60%;margin-bottom:20px;height:20px;background:#333;"></div>
+        <div class="wf-text" style="width:50%;background:#444;margin-bottom:5px;"></div>
+        <div class="wf-text" style="width:45%;background:#444;"></div>
+      </div>
+
+      <!-- 4 PILLARS -->
+      <div class="wf-section">
+        <div style="margin-bottom:16px;"><div class="wf-label" style="margin-bottom:8px;"></div><div class="wf-h2" style="width:200px;height:14px;background:#222;"></div></div>
+        <div class="wf-grid-2" style="gap:12px;">
+          <div class="wf-card" style="padding:16px;">
+            <div style="width:32px;height:32px;background:#eee;border-radius:8px;margin-bottom:10px;"></div>
+            <div class="wf-h3" style="width:70%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:80%;margin-bottom:10px;"></div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:65%;"></div></div>
+            </div>
+          </div>
+          <div class="wf-card" style="padding:16px;">
+            <div style="width:32px;height:32px;background:#eee;border-radius:8px;margin-bottom:10px;"></div>
+            <div class="wf-h3" style="width:70%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:80%;margin-bottom:10px;"></div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:65%;"></div></div>
+            </div>
+          </div>
+          <div class="wf-card" style="padding:16px;">
+            <div style="width:32px;height:32px;background:#eee;border-radius:8px;margin-bottom:10px;"></div>
+            <div class="wf-h3" style="width:70%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:10px;"></div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:65%;"></div></div>
+            </div>
+          </div>
+          <div class="wf-card" style="padding:16px;">
+            <div style="width:32px;height:32px;background:#eee;border-radius:8px;margin-bottom:10px;"></div>
+            <div class="wf-h3" style="width:70%;margin-bottom:8px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:10px;"></div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:75%;"></div></div>
+              <div style="display:flex;gap:5px;align-items:center;"><div style="width:4px;height:4px;background:#ccc;border-radius:50%;"></div><div class="wf-text-sm" style="width:65%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="wf-section-mid">
+        <div style="margin-bottom:16px;"><div class="wf-label" style="margin-bottom:8px;"></div><div class="wf-h2" style="width:200px;height:14px;background:#222;"></div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px;">
+            <div style="min-width:80px;"><div style="height:7px;width:60px;background:#ccc;border-radius:4px;margin-bottom:5px;"></div><div style="height:7px;width:50px;background:var(--red);border-radius:4px;opacity:0.6;"></div></div>
+            <div style="width:1px;height:28px;background:#ddd;"></div>
+            <div style="flex:1;"><div class="wf-h3" style="width:40%;margin-bottom:6px;"></div><div class="wf-text" style="width:90%;"></div></div>
+            <div style="width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px;">
+            <div style="min-width:80px;"><div style="height:7px;width:60px;background:#ccc;border-radius:4px;margin-bottom:5px;"></div><div style="height:7px;width:50px;background:var(--red);border-radius:4px;opacity:0.6;"></div></div>
+            <div style="width:1px;height:28px;background:#ddd;"></div>
+            <div style="flex:1;"><div class="wf-h3" style="width:40%;margin-bottom:6px;"></div><div class="wf-text" style="width:85%;"></div></div>
+            <div style="width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px;">
+            <div style="min-width:80px;"><div style="height:7px;width:60px;background:#ccc;border-radius:4px;margin-bottom:5px;"></div><div style="height:7px;width:50px;background:var(--red);border-radius:4px;opacity:0.6;"></div></div>
+            <div style="width:1px;height:28px;background:#ddd;"></div>
+            <div style="flex:1;"><div class="wf-h3" style="width:40%;margin-bottom:6px;"></div><div class="wf-text" style="width:90%;"></div></div>
+            <div style="width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px;">
+            <div style="min-width:80px;"><div style="height:7px;width:60px;background:#ccc;border-radius:4px;margin-bottom:5px;"></div><div style="height:7px;width:50px;background:var(--red);border-radius:4px;opacity:0.6;"></div></div>
+            <div style="width:1px;height:28px;background:#ddd;"></div>
+            <div style="flex:1;"><div class="wf-h3" style="width:40%;margin-bottom:6px;"></div><div class="wf-text" style="width:80%;"></div></div>
+            <div style="width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="wf-section-dark" style="text-align:center;padding:28px 24px;">
+        <div class="wf-h1" style="width:260px;margin:0 auto 6px;height:18px;background:#eee;"></div>
+        <div class="wf-h1" style="width:200px;margin:0 auto 14px;height:18px;background:#eee;"></div>
+        <div class="wf-text" style="width:300px;margin:0 auto 16px;background:#444;"></div>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <div class="wf-btn" style="width:160px;height:34px;">Book Strategy Call</div>
+          <div class="wf-btn-outline" style="width:130px;height:34px;"></div>
+        </div>
+      </div>
+      <div class="wf-footer" style="height:40px;"></div>
+    </div>
+
+    <div class="ann-list">
+      <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Hero.</strong> Left-aligned headline "Growth by design, not accident." with sub-copy explaining the approach. No image — strong typographic statement.</div></div>
+      <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>4 Strategic Pillars</strong> in a 2×2 grid: Data Intelligence, Rapid Experimentation, Brand-First Thinking, Continuous Iteration.</div></div>
+      <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Engagement Timeline</strong> — 4 horizontal rows: Phase 1 (Week 1–2 Audit) → Phase 2 (Week 3 Strategy) → Phase 3 (Week 4–12 Execution) → Phase 4 (Ongoing Scale).</div></div>
+      <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>CTA</strong> — "Book a Strategy Call" (links to Contact/Calendly) + "Explore Services" secondary button.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 3: SERVICES ════════════════════════════════ -->
+<div class="section page-break" id="services">
+  <div class="container">
+    <div class="page-intro">
+      <div class="page-intro-num">03</div>
+      <div>
+        <div class="page-intro-title">Services Page</div>
+        <div class="page-intro-desc">Full breakdown of all services across 3 pillars. Uses a sticky left panel + accordion layout — each service expands to show description and outcome tags. Designed for comprehensive browsing without overwhelming the reader.</div>
+        <div class="page-intro-url">URL: socialoutlet.com/services</div>
+      </div>
+    </div>
+
+    <div class="wf-screen">
+      <div class="wf-nav"><div style="display:flex;align-items:center;gap:8px;"><div class="wf-nav-logo">S&amp;</div></div><div class="wf-nav-links"><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div></div><div class="wf-nav-cta"></div></div>
+
+      <!-- Hero -->
+      <div class="wf-section-dark" style="padding:36px 24px;">
+        <div class="wf-label" style="margin-bottom:10px;"></div>
+        <div class="wf-h1" style="width:80%;margin-bottom:6px;height:18px;background:#eee;"></div>
+        <div class="wf-h1" style="width:65%;margin-bottom:6px;height:18px;background:#eee;"></div>
+        <div class="wf-h1" style="width:50%;margin-bottom:16px;height:18px;background:var(--red);opacity:0.7;"></div>
+        <div class="wf-text" style="width:45%;background:#444;"></div>
+      </div>
+
+      <!-- Service Section: Organic -->
+      <div class="wf-section">
+        <div class="wf-col-1-2">
+          <!-- Left sticky -->
+          <div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+              <div style="width:28px;height:28px;background:#eee;border-radius:6px;"></div>
+              <div style="width:20px;height:20px;background:#f0f0f0;border-radius:4px;"></div>
+            </div>
+            <div class="wf-h2" style="width:90%;height:14px;margin-bottom:5px;background:#222;"></div>
+            <div class="wf-h2" style="width:70%;height:14px;margin-bottom:10px;background:#222;"></div>
+            <div style="height:7px;width:90%;background:var(--red);border-radius:4px;opacity:0.5;margin-bottom:10px;"></div>
+            <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:90%;margin-bottom:4px;"></div>
+            <div class="wf-text" style="width:80%;margin-bottom:14px;"></div>
+            <div class="wf-btn-outline" style="width:110px;height:26px;"></div>
+          </div>
+          <!-- Right accordion -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="border:1px solid #ddd;border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;background:#fff;"><div class="wf-h3" style="width:55%;"></div><div style="width:14px;height:14px;background:#ddd;border-radius:50%;"></div></div>
+            <!-- Expanded item -->
+            <div style="border:1px solid var(--red);border-radius:8px;overflow:hidden;background:#fff;">
+              <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;"><div class="wf-h3" style="width:55%;"></div><div style="width:14px;height:14px;background:var(--red);border-radius:50%;opacity:0.5;"></div></div>
+              <div style="padding:10px 14px;border-top:1px solid #eee;background:#fafafa;">
+                <div class="wf-text" style="width:100%;margin-bottom:4px;"></div>
+                <div class="wf-text" style="width:85%;margin-bottom:10px;"></div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <div style="height:20px;width:90px;background:rgba(232,35,26,0.1);border:1px solid rgba(232,35,26,0.2);border-radius:100px;"></div>
+                  <div style="height:20px;width:110px;background:rgba(232,35,26,0.1);border:1px solid rgba(232,35,26,0.2);border-radius:100px;"></div>
+                  <div style="height:20px;width:80px;background:rgba(232,35,26,0.1);border:1px solid rgba(232,35,26,0.2);border-radius:100px;"></div>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid #ddd;border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;background:#fff;"><div class="wf-h3" style="width:55%;"></div><div style="width:14px;height:14px;background:#ddd;border-radius:50%;"></div></div>
+            <div style="border:1px solid #ddd;border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;background:#fff;"><div class="wf-h3" style="width:55%;"></div><div style="width:14px;height:14px;background:#ddd;border-radius:50%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Another service section hint -->
+      <div class="wf-section-mid" style="padding:16px 24px;text-align:center;">
+        <div style="height:8px;background:#ddd;border-radius:4px;width:200px;margin:0 auto 6px;"></div>
+        <div style="font-size:11px;color:#aaa;font-family:'Inter',sans-serif;">Demand Generation section follows same pattern</div>
+      </div>
+
+      <div class="wf-section" style="padding:16px 24px;text-align:center;">
+        <div style="height:8px;background:#ddd;border-radius:4px;width:180px;margin:0 auto 6px;"></div>
+        <div style="font-size:11px;color:#aaa;font-family:'Inter',sans-serif;">Creative section follows same pattern</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="wf-section-dark" style="text-align:center;padding:24px;">
+        <div class="wf-h1" style="width:220px;margin:0 auto 10px;height:16px;background:#eee;"></div>
+        <div class="wf-text" style="width:280px;margin:0 auto 14px;background:#444;"></div>
+        <div class="wf-btn" style="width:160px;margin:0 auto;height:32px;">Book Free Audit</div>
+      </div>
+      <div class="wf-footer" style="height:40px;"></div>
+    </div>
+
+    <div class="ann-list">
+      <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Sticky Left Panel.</strong> On desktop, the category title, tagline, description, and "Get a Quote" button stick while you scroll through the service accordion on the right.</div></div>
+      <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Accordion Services.</strong> Each service is collapsed by default. Click to expand — reveals description + 3 outcome tags (e.g. "Higher conversion rates", "Lower CAC").</div></div>
+      <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>3 Category Sections.</strong> Organic Marketing (4 services) → Demand Generation (5 services) → Creative (4 services). Alternating dark/light background per section.</div></div>
+      <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Outcome Tags.</strong> Red pill-shaped labels showing key results for each service (e.g. "Organic traffic growth", "Reduced churn").</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 4: CASE STUDY ════════════════════════════════ -->
+<div class="section page-break" id="casestudy">
+  <div class="container">
+    <div class="page-intro">
+      <div class="page-intro-num">04</div>
+      <div>
+        <div class="page-intro-title">Case Study Page</div>
+        <div class="page-intro-desc">Portfolio of client work. Cards display client, category, key result metrics, and a campaign image. Filter by service category. Currently 6 placeholder case studies — ready to be replaced with real work.</div>
+        <div class="page-intro-url">URL: socialoutlet.com/case-study</div>
+      </div>
+    </div>
+
+    <div class="wf-screen">
+      <div class="wf-nav"><div style="display:flex;align-items:center;gap:8px;"><div class="wf-nav-logo">S&amp;</div></div><div class="wf-nav-links"><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div></div><div class="wf-nav-cta"></div></div>
+
+      <div class="wf-section-dark" style="padding:36px 24px;">
+        <div class="wf-label" style="margin-bottom:10px;"></div>
+        <div class="wf-h1" style="width:65%;margin-bottom:6px;height:18px;background:#eee;"></div>
+        <div class="wf-h1" style="width:50%;margin-bottom:6px;height:18px;background:var(--red);opacity:0.7;"></div>
+        <div class="wf-h1" style="width:55%;margin-bottom:16px;height:18px;background:#eee;"></div>
+        <div class="wf-text" style="width:45%;background:#444;"></div>
+      </div>
+
+      <!-- Filter bar -->
+      <div style="padding:12px 24px;background:#f0f0f0;border-top:1px solid #ddd;border-bottom:1px solid #ddd;display:flex;gap:8px;">
+        <div style="height:26px;width:60px;background:var(--red);border-radius:100px;"></div>
+        <div style="height:26px;width:100px;background:#fff;border:1px solid #ddd;border-radius:100px;"></div>
+        <div style="height:26px;width:120px;background:#fff;border:1px solid #ddd;border-radius:100px;"></div>
+        <div style="height:26px;width:90px;background:#fff;border:1px solid #ddd;border-radius:100px;"></div>
+        <div style="height:26px;width:70px;background:#fff;border:1px solid #ddd;border-radius:100px;"></div>
+      </div>
+
+      <!-- Case study grid -->
+      <div class="wf-section">
+        <div class="wf-grid-3">
+          <div class="wf-card" style="padding:0;overflow:hidden;">
+            <div class="wf-img" style="height:100px;border-radius:0;"><div class="wf-img-label" style="font-size:8px;">Campaign Image<br/>800×480px</div></div>
+            <div style="padding:12px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><div style="height:18px;width:60px;background:rgba(232,35,26,0.1);border-radius:100px;"></div><div style="height:7px;width:70px;background:#eee;border-radius:4px;margin-top:6px;"></div></div>
+              <div class="wf-h3" style="width:90%;margin-bottom:5px;"></div>
+              <div class="wf-h3" style="width:75%;margin-bottom:8px;"></div>
+              <div class="wf-text" style="width:100%;margin-bottom:3px;"></div>
+              <div class="wf-text" style="width:80%;margin-bottom:10px;"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+              </div>
+              <div style="height:7px;width:90px;background:var(--red);border-radius:4px;opacity:0.6;"></div>
+            </div>
+          </div>
+          <div class="wf-card" style="padding:0;overflow:hidden;">
+            <div class="wf-img" style="height:100px;border-radius:0;"><div class="wf-img-label" style="font-size:8px;">Campaign Image</div></div>
+            <div style="padding:12px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><div style="height:18px;width:60px;background:rgba(232,35,26,0.1);border-radius:100px;"></div><div style="height:7px;width:70px;background:#eee;border-radius:4px;margin-top:6px;"></div></div>
+              <div class="wf-h3" style="width:90%;margin-bottom:5px;"></div>
+              <div class="wf-h3" style="width:75%;margin-bottom:8px;"></div>
+              <div class="wf-text" style="width:100%;margin-bottom:3px;"></div>
+              <div class="wf-text" style="width:80%;margin-bottom:10px;"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+              </div>
+              <div style="height:7px;width:90px;background:var(--red);border-radius:4px;opacity:0.6;"></div>
+            </div>
+          </div>
+          <div class="wf-card" style="padding:0;overflow:hidden;">
+            <div class="wf-img" style="height:100px;border-radius:0;"><div class="wf-img-label" style="font-size:8px;">Campaign Image</div></div>
+            <div style="padding:12px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><div style="height:18px;width:60px;background:rgba(232,35,26,0.1);border-radius:100px;"></div><div style="height:7px;width:70px;background:#eee;border-radius:4px;margin-top:6px;"></div></div>
+              <div class="wf-h3" style="width:90%;margin-bottom:5px;"></div>
+              <div class="wf-h3" style="width:75%;margin-bottom:8px;"></div>
+              <div class="wf-text" style="width:100%;margin-bottom:3px;"></div>
+              <div class="wf-text" style="width:80%;margin-bottom:10px;"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+                <div style="background:#f8f8f8;border-radius:6px;padding:6px 4px;text-align:center;"><div style="height:10px;background:var(--red);opacity:0.5;border-radius:3px;margin-bottom:4px;"></div><div class="wf-text-sm"></div></div>
+              </div>
+              <div style="height:7px;width:90px;background:var(--red);border-radius:4px;opacity:0.6;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:#aaa;text-align:center;font-family:'Inter',sans-serif;">3 more cards follow (total 6 on page)</div>
+      </div>
+
+      <div class="wf-section-dark" style="text-align:center;padding:24px;"><div class="wf-h1" style="width:200px;margin:0 auto 10px;height:16px;background:#eee;"></div><div class="wf-btn" style="width:160px;margin:0 auto;height:32px;">Start a Conversation</div></div>
+      <div class="wf-footer" style="height:40px;"></div>
+    </div>
+
+    <div class="ann-list">
+      <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Category Filter Bar.</strong> "All / Organic Marketing / Demand Generation / Creative" — clicking filters cards instantly without page reload.</div></div>
+      <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Case Study Cards.</strong> Each card has: campaign image (800×480px), category tag, client name, case study title, 1-line description, and 3 key metrics.</div></div>
+      <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Metrics Tiles.</strong> 3 small tiles per card showing key numbers (e.g. "4.2x ROAS", "+280% Revenue", "-42% CAC"). These need to be filled with real data.</div></div>
+      <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Content needed from client:</strong> Real campaign images (800×480px), client names, actual result metrics, and case study descriptions for each project.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 5: CONTACT ════════════════════════════════ -->
+<div class="section page-break" id="contact">
+  <div class="container">
+    <div class="page-intro">
+      <div class="page-intro-num">05</div>
+      <div>
+        <div class="page-intro-title">Contact Us Page</div>
+        <div class="page-intro-desc">Two-part contact experience: a detailed brief form (name, email, services interested, budget, message) + an inline Calendly embed for direct booking. Both channels available on the same page.</div>
+        <div class="page-intro-url">URL: socialoutlet.com/contact</div>
+      </div>
+    </div>
+
+    <div class="wf-screen">
+      <div class="wf-nav"><div style="display:flex;align-items:center;gap:8px;"><div class="wf-nav-logo">S&amp;</div></div><div class="wf-nav-links"><div class="wf-nav-link"></div><div class="wf-nav-link"></div><div class="wf-nav-link"></div></div><div class="wf-nav-cta"></div></div>
+
+      <div class="wf-section-dark" style="padding:36px 24px;">
+        <div class="wf-label" style="margin-bottom:10px;"></div>
+        <div class="wf-h1" style="width:55%;margin-bottom:6px;height:18px;background:#eee;"></div>
+        <div class="wf-h1" style="width:65%;margin-bottom:6px;height:18px;background:#eee;"></div>
+        <div class="wf-h1" style="width:40%;margin-bottom:16px;height:18px;background:var(--red);opacity:0.7;"></div>
+        <div class="wf-text" style="width:50%;background:#444;margin-bottom:4px;"></div>
+        <div class="wf-text" style="width:40%;background:#444;"></div>
+      </div>
+
+      <!-- Form section -->
+      <div class="wf-section">
+        <div class="wf-col-1-2">
+          <!-- Left: contact info -->
+          <div>
+            <div class="wf-h2" style="width:80%;height:14px;margin-bottom:16px;background:#222;"></div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+              <div style="display:flex;gap:10px;align-items:center;"><div style="width:32px;height:32px;background:#eee;border-radius:8px;"></div><div><div class="wf-text-sm" style="width:40px;margin-bottom:4px;background:#bbb;"></div><div class="wf-text" style="width:130px;"></div></div></div>
+              <div style="display:flex;gap:10px;align-items:center;"><div style="width:32px;height:32px;background:#eee;border-radius:8px;"></div><div><div class="wf-text-sm" style="width:40px;margin-bottom:4px;background:#bbb;"></div><div class="wf-text" style="width:120px;"></div></div></div>
+              <div style="display:flex;gap:10px;align-items:center;"><div style="width:32px;height:32px;background:#eee;border-radius:8px;"></div><div><div class="wf-text-sm" style="width:50px;margin-bottom:4px;background:#bbb;"></div><div class="wf-text" style="width:90px;"></div></div></div>
+            </div>
+            <div style="border-top:1px solid #eee;padding-top:16px;">
+              <div class="wf-text-sm" style="width:100px;margin-bottom:8px;background:#ccc;"></div>
+              <div style="display:flex;gap:6px;align-items:center;"><div class="wf-accent-dot" style="width:8px;height:8px;"></div><div class="wf-text" style="width:140px;"></div></div>
+            </div>
+          </div>
+          <!-- Right: form -->
+          <div>
+            <div class="wf-grid-2" style="gap:8px;margin-bottom:8px;">
+              <div><div class="wf-text-sm" style="width:60px;margin-bottom:5px;background:#ccc;"></div><div style="height:34px;background:#f8f8f8;border:1px solid #ddd;border-radius:8px;"></div></div>
+              <div><div class="wf-text-sm" style="width:70px;margin-bottom:5px;background:#ccc;"></div><div style="height:34px;background:#f8f8f8;border:1px solid #ddd;border-radius:8px;"></div></div>
+            </div>
+            <div style="margin-bottom:8px;"><div class="wf-text-sm" style="width:80px;margin-bottom:5px;background:#ccc;"></div><div style="height:34px;background:#f8f8f8;border:1px solid #ddd;border-radius:8px;"></div></div>
+            <!-- Service pills -->
+            <div style="margin-bottom:8px;">
+              <div class="wf-text-sm" style="width:130px;margin-bottom:8px;background:#ccc;"></div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <div style="height:22px;width:90px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:70px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:110px;background:var(--red);border-radius:100px;opacity:0.8;"></div>
+                <div style="height:22px;width:80px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:100px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:90px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+              </div>
+            </div>
+            <!-- Budget pills -->
+            <div style="margin-bottom:8px;">
+              <div class="wf-text-sm" style="width:90px;margin-bottom:8px;background:#ccc;"></div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <div style="height:22px;width:80px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:90px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:90px;background:#f0f0f0;border:1px solid #ddd;border-radius:100px;"></div>
+                <div style="height:22px;width:70px;background:var(--red);border-radius:100px;opacity:0.8;"></div>
+              </div>
+            </div>
+            <div style="margin-bottom:10px;"><div class="wf-text-sm" style="width:120px;margin-bottom:5px;background:#ccc;"></div><div style="height:64px;background:#f8f8f8;border:1px solid #ddd;border-radius:8px;"></div></div>
+            <div class="wf-btn" style="width:100%;height:36px;">Send Message</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendly section -->
+      <div class="wf-section-mid" style="padding:24px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="height:22px;width:120px;background:#ddd;border-radius:100px;margin:0 auto 10px;"></div>
+          <div class="wf-h2" style="width:220px;height:14px;margin:0 auto 8px;background:#333;"></div>
+          <div class="wf-text" style="width:240px;margin:0 auto;"></div>
+        </div>
+        <!-- Calendly widget box -->
+        <div style="border:2px dashed #ccc;border-radius:12px;height:140px;display:flex;align-items:center;justify-content:center;background:#fff;">
+          <div style="text-align:center;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#888;margin-bottom:4px;">Calendly Inline Widget</div>
+            <div style="font-size:11px;color:#aaa;font-family:'Inter',sans-serif;">calendly.com/nikitsoni17/30min</div>
+            <div style="font-size:10px;color:#bbb;margin-top:4px;font-family:'Inter',sans-serif;">Shows live booking calendar embedded on page</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-footer" style="height:40px;"></div>
+    </div>
+
+    <div class="ann-list">
+      <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Left Panel</strong> — Email, Phone, Location, and response time indicator. Sticky on desktop.</div></div>
+      <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Brief Form.</strong> Fields: Name, Work Email, Company, Services (multi-select pills), Budget range (pills), Message. On submit → success message "Message received!"</div></div>
+      <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Service Selector.</strong> 12 service pills — tap/click to highlight in red. Multiple can be selected. Pre-fills the brief context.</div></div>
+      <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Calendly Embed.</strong> Live inline calendar below the form. Connected to <code style="font-size:11px;background:#f0f0f0;padding:2px 5px;border-radius:3px;">calendly.com/nikitsoni17/30min</code>. Dark-themed to match site.</div></div>
+      <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Content needed:</strong> Real email address, phone number, and office location to replace placeholder values.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ STYLE GUIDE ════════════════════════════════ -->
+<div class="section page-break" id="styleguide">
+  <div class="container">
+    <div class="sec-header">
+      <div class="sec-tag">07 — Design System</div>
+      <div class="sec-title">Style Guide</div>
+      <p class="sec-sub">The visual language of the website — colors, typography, and component rules.</p>
+    </div>
+
+    <!-- Colors -->
+    <h3 style="font-size:18px;margin-bottom:16px;">Color Palette</h3>
+    <div class="color-grid" style="margin-bottom:40px;">
+      <div class="color-swatch">
+        <div class="color-block" style="background:#E8231A;"></div>
+        <div class="color-info"><div class="color-name">Brand Red</div><div class="color-hex">#E8231A</div><div class="color-role">CTAs, logo, key accents</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#0C0B0B;border-bottom:1px solid #333;"></div>
+        <div class="color-info"><div class="color-name">Dark BG</div><div class="color-hex">#0C0B0B</div><div class="color-role">Page background</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#131111;border-bottom:1px solid #333;"></div>
+        <div class="color-info"><div class="color-name">Card BG</div><div class="color-hex">#131111</div><div class="color-role">Cards, panels</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#ffffff;border-bottom:1px solid #eee;"></div>
+        <div class="color-info"><div class="color-name">White</div><div class="color-hex">#FFFFFF</div><div class="color-role">Headlines, primary text</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#888888;"></div>
+        <div class="color-info"><div class="color-name">Muted Grey</div><div class="color-hex">#888888</div><div class="color-role">Section labels, meta text</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#555555;"></div>
+        <div class="color-info"><div class="color-name">Body Grey</div><div class="color-hex">#555555</div><div class="color-role">Paragraphs, descriptions</div></div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <h3 style="font-size:18px;margin-bottom:16px;">Typography</h3>
+    <div style="border:1.5px solid var(--border);border-radius:12px;padding:28px;margin-bottom:40px;">
+      <div class="type-sample">
+        <div class="type-label">Display / Headings — Space Grotesk 700</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;letter-spacing:-0.03em;line-height:1;">Where Brands <span style="color:var(--red);">Come to</span> Scale.</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-label">Section Title — Space Grotesk 700</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.02em;">Three pillars. One engine.</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-label">Card Heading — Space Grotesk 600</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;">Organic Marketing</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-label">Body Text — Inter 400</div>
+        <div style="font-family:'Inter',sans-serif;font-size:15px;color:#555;line-height:1.7;">A full-service creative agency blending organic growth, performance marketing, and bold creative into a single 360° engine for your brand.</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-label">Section Label — Inter 600 Uppercase</div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.15em;color:#888;">What We Do</div>
+      </div>
+      <div class="type-sample" style="border:none;margin-bottom:0;padding-bottom:0;">
+        <div class="type-label">CTA Button Text — Space Grotesk 600</div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;padding:12px 24px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;">Start Your Journey →</div>
+      </div>
+    </div>
+
+    <!-- Component guide -->
+    <h3 style="font-size:18px;margin-bottom:16px;">Key Components</h3>
+    <div class="wf-grid-2" style="gap:16px;">
+      <div style="border:1.5px solid var(--border);border-radius:12px;padding:20px;">
+        <div style="font-weight:600;font-family:'Space Grotesk',sans-serif;margin-bottom:12px;font-size:14px;">Buttons</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="background:var(--red);color:#fff;padding:8px 18px;border-radius:100px;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;white-space:nowrap;">Primary</div>
+            <div style="font-size:12px;color:#666;">Red bg, white text → hover: white bg, black text</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="border:1.5px solid #ddd;padding:8px 18px;border-radius:100px;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;white-space:nowrap;">Secondary</div>
+            <div style="font-size:12px;color:#666;">Dark border, white text → hover: darker border</div>
+          </div>
+        </div>
+      </div>
+      <div style="border:1.5px solid var(--border);border-radius:12px;padding:20px;">
+        <div style="font-weight:600;font-family:'Space Grotesk',sans-serif;margin-bottom:12px;font-size:14px;">Tags &amp; Badges</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <div style="background:rgba(232,35,26,0.1);border:1px solid rgba(232,35,26,0.2);color:var(--red);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;">Featured</div>
+          <div style="background:#f0f0f0;border:1px solid #ddd;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;color:#555;">SEO</div>
+          <div style="border:1px solid rgba(232,35,26,0.2);background:rgba(232,35,26,0.05);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;color:#888;display:flex;align-items:center;gap:5px;"><span style="width:5px;height:5px;background:var(--red);border-radius:50%;display:inline-block;"></span>360° Solutions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ CONTENT CHECKLIST ════════════════════════════════ -->
+<div class="section page-break" id="content-notes">
+  <div class="container">
+    <div class="sec-header">
+      <div class="sec-tag">08 — Next Steps</div>
+      <div class="sec-title">Content Checklist</div>
+      <p class="sec-sub">Items needed from the client to complete the website before launch.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:var(--light);border-radius:12px;padding:20px 24px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:var(--red);border-radius:50%;display:inline-block;"></span>Images Required</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span><strong>Hero image</strong> — Team photo or brand visual. Dark/moody tone preferred. 800×1000px.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span><strong>Logo PNG</strong> — White + red version for dark background. Transparent bg.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span><strong>Case study images</strong> — 6 campaign/brand screenshots. 800×480px each.</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span><strong>OG image</strong> — Social share thumbnail. 1200×630px.</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--light);border-radius:12px;padding:20px 24px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:var(--red);border-radius:50%;display:inline-block;"></span>Case Study Data (per project)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Client name (or anonymised)</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Service category</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>3 key result metrics with values</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>1–2 line description of the challenge</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Campaign image (800×480px)</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Category tag (e.g. "ROAS", "SEO", "Creative")</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--light);border-radius:12px;padding:20px 24px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:var(--red);border-radius:50%;display:inline-block;"></span>Contact &amp; Brand Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Business email address</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Phone number</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Office location / city</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Instagram, LinkedIn, Twitter handles</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Real stats (brands, ROAS, years etc)</span></div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;"><span style="margin-top:3px;width:16px;height:16px;min-width:16px;border:1.5px solid #ccc;border-radius:4px;display:inline-block;"></span><span>Confirm: website domain name</span></div>
+        </div>
+      </div>
+
+      <div style="background:#fff5f5;border:1.5px solid rgba(232,35,26,0.2);border-radius:12px;padding:20px 24px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:8px;color:var(--red);">Optional Enhancements (Phase 2)</div>
+        <div style="font-size:13px;color:#666;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div>• Individual case study detail pages</div>
+          <div>• Blog / Insights section</div>
+          <div>• Client testimonials / logos</div>
+          <div>• Team page</div>
+          <div>• Form backend (email notifications)</div>
+          <div>• Analytics integration (GA4 / GTM)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ BACK COVER ════════════════════════════════ -->
+<div class="cover page-break" style="min-height:50vh;justify-content:center;align-items:center;">
+  <div style="text-align:center;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px;">
+      <div class="logo-mark">S&amp;</div>
+      <span class="logo-name" style="font-size:22px;">Social <span>&amp;</span>utlet</span>
+    </div>
+    <div style="font-family:'Space Grotesk',sans-serif;color:#fff;font-size:36px;font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;">360° Solutions for Brands.</div>
+    <div style="color:#555;font-size:14px;">Questions on this document? Let's discuss.</div>
+  </div>
+</div>
+
+</body>
+</html>
