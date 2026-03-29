@@ -57,10 +57,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
+  const closeMenus = () => {
     setMobileOpen(false);
     setDropdownOpen(false);
-  }, [pathname]);
+  };
 
   return (
     <nav
@@ -77,9 +77,9 @@ export default function Navbar() {
             <Image
               src="/logos/brand-logo.png"
               alt="Social &utlet"
-              width={280}
-              height={72}
-              className="object-contain h-30 w-auto max-w-[220px]"
+              width={320}
+              height={80}
+              className="object-contain h-30 w-auto max-w-[280px]"
               priority
             />
           </Link>
@@ -96,6 +96,7 @@ export default function Navbar() {
                 >
                   <Link
                     href={link.href}
+                    onClick={closeMenus}
                     className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                       pathname === link.href
                         ? 'text-[#E8231A]'
@@ -128,6 +129,7 @@ export default function Navbar() {
                             <li key={item}>
                               <Link
                                 href="/services"
+                                onClick={closeMenus}
                                 className="text-gray-500 hover:text-gray-900 text-sm transition-colors duration-150 block py-0.5"
                               >
                                 {item}
@@ -144,6 +146,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
+                  onClick={closeMenus}
                   className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                     pathname === link.href
                       ? 'text-[#E8231A]'
@@ -162,7 +165,7 @@ export default function Navbar() {
               href="/contact"
               className="hidden lg:inline-flex items-center gap-2 bg-[#E8231A] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-gray-900 transition-colors duration-200"
             >
-              Get Started
+              Book a Call
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -186,6 +189,7 @@ export default function Navbar() {
             <div key={link.label}>
               <Link
                 href={link.href}
+                onClick={closeMenus}
                 className={`block px-4 py-3 text-base font-medium rounded-xl transition-colors ${
                   pathname === link.href
                     ? 'text-[#E8231A] bg-[#E8231A]/5'
@@ -205,6 +209,7 @@ export default function Navbar() {
                         <Link
                           key={item}
                           href="/services"
+                          onClick={closeMenus}
                           className="block px-4 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
                         >
                           {item}
@@ -219,9 +224,10 @@ export default function Navbar() {
           <div className="pt-4">
             <Link
               href="/contact"
+              onClick={closeMenus}
               className="block text-center bg-[#E8231A] text-white font-semibold py-3 rounded-full"
             >
-              Get Started
+              Book a Call
             </Link>
           </div>
         </div>

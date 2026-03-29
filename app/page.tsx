@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -10,91 +10,135 @@ import {
 } from 'lucide-react';
 
 /* ── intersection-observer hook ── */
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+function useInView(threshold = 0.15): [(node: Element | null) => void, boolean] {
   const [inView, setInView] = useState(false);
-  useEffect(() => {
+  const ref = useCallback((node: Element | null) => {
+    if (!node) return;
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
       { threshold }
     );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    observer.observe(node);
   }, [threshold]);
-  return { ref, inView };
+  return [ref, inView];
 }
 
-/* ── animated counter ── */
-function Counter({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const { ref, inView } = useInView(0.5);
+
+/* ── Hero Carousel ── */
+const carouselSlides = [
+  {
+    client: 'D2C Fashion Brand',
+    category: 'Demand Generation',
+    headline: '4.2x ROAS',
+    sub: 'in 90 days',
+    metrics: [
+      { label: 'Revenue Growth', value: '+280%' },
+      { label: 'CAC Reduction', value: '-42%' },
+    ],
+    image: '/case-studies/perfora-1.jpg', // TODO: replace with e.g. '/hero/fashion-dashboard.png'
+  },
+  {
+    client: 'B2B SaaS',
+    category: 'Organic Marketing',
+    headline: '30x Traffic',
+    sub: 'in 6 months',
+    metrics: [
+      { label: 'Organic Leads', value: '+320%' },
+      { label: 'Domain Rating', value: '42 → 67' },
+    ],
+    image: '/case-studies/perfora-2.jpg',
+  },
+  {
+    client: 'Fintech App',
+    category: 'Performance',
+    headline: '50K Users',
+    sub: 'in 3 months',
+    metrics: [
+      { label: 'CAC', value: '₹18' },
+      { label: 'Activation Rate', value: '67%' },
+    ],
+    image: '/case-studies/perfora-3.jpg',
+  },
+];
+
+function HeroCarousel() {
+  const [active, setActive] = useState(0);
+
   useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = target / 60;
     const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(start));
-    }, 16);
+      setActive((prev) => (prev + 1) % carouselSlides.length);
+    }, 4000);
     return () => clearInterval(timer);
-  }, [inView, target]);
-  return <span ref={ref}>{count}{suffix}</span>;
-}
-
-/* ── Creative Hero Animation ── */
-function HeroAnimation() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const handleMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      mouse.current.x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-      mouse.current.y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    };
-    let raf: number;
-    const layers = el.querySelectorAll<HTMLElement>('[data-depth]');
-    const animate = () => {
-      layers.forEach((layer) => {
-        const depth = parseFloat(layer.dataset.depth || '0');
-        const tx = mouse.current.x * depth * 22;
-        const ty = mouse.current.y * depth * 22;
-        layer.style.transform = `translate(${tx}px, ${ty}px)`;
-      });
-      raf = requestAnimationFrame(animate);
-    };
-    window.addEventListener('mousemove', handleMove);
-    raf = requestAnimationFrame(animate);
-    return () => { window.removeEventListener('mousemove', handleMove); cancelAnimationFrame(raf); };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full aspect-square max-w-[520px] mx-auto select-none" aria-hidden>
-      <div className="absolute inset-0 rounded-3xl" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-      <div data-depth="0.15" className="absolute top-[8%] right-[5%] w-[62%] h-[62%] rounded-full border-2 border-[#E8231A]/20 float-a" style={{ transition: 'transform 0.08s linear' }} />
-      <div data-depth="0.35" className="absolute top-[18%] left-[12%] w-[28%] h-[28%] rounded-full bg-[#E8231A]/8 border border-[#E8231A]/15 float-b" style={{ transition: 'transform 0.06s linear' }} />
-      <div data-depth="0.55" className="absolute top-[52%] right-[18%] w-[10%] h-[10%] rounded-full bg-[#E8231A] float-c shadow-lg shadow-[#E8231A]/30" style={{ transition: 'transform 0.04s linear' }} />
-      <div data-depth="0.2" className="absolute top-[30%] left-[25%] w-[50%] h-[50%]" style={{ transition: 'transform 0.07s linear' }}>
-        <div className="w-full h-full rounded-full border-2 border-dashed border-gray-300 spin-slow" />
+    <div className="w-full max-w-[460px]">
+      {/* Card stack */}
+      <div className="grid mb-5">
+        {carouselSlides.map((slide, i) => (
+          <div
+            key={i}
+            className={`col-start-1 row-start-1 transition-all duration-700 ${
+              i === active
+                ? 'opacity-100 scale-100 pointer-events-auto'
+                : 'opacity-0 scale-[0.97] pointer-events-none'
+            }`}
+          >
+            <div className="bg-white rounded-[20px] border border-gray-100 shadow-2xl shadow-black/10 overflow-hidden">
+              {/* Screenshot area */}
+              <div className="relative h-64 bg-[#F8F8F8] overflow-hidden">
+                {slide.image
+                  ? <Image src={slide.image} alt={slide.client} fill className="object-cover" />
+                  : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                      <div className="w-16 h-16 rounded-2xl bg-gray-200/60 flex items-center justify-center">
+                        <div className="w-6 h-6 rounded bg-gray-300/80" />
+                      </div>
+                      <p className="text-[11px] text-gray-300 font-medium">Dashboard screenshot · 800×512px</p>
+                    </div>
+                  )
+                }
+                {/* Glassmorphism category badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="bg-white/85 backdrop-blur-sm text-[#E8231A] text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full border border-[#E8231A]/20 shadow-sm">
+                    {slide.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="px-6 pt-5 pb-6">
+                <p className="text-gray-400 text-[11px] font-semibold uppercase tracking-widest mb-2">{slide.client}</p>
+                <div className="flex items-baseline gap-2 mb-5">
+                  <span className="text-[42px] font-bold leading-none text-gray-900" style={{ fontFamily: 'Poppins' }}>{slide.headline}</span>
+                  <span className="text-gray-400 text-sm">{slide.sub}</span>
+                </div>
+                <div className="flex gap-2.5">
+                  {slide.metrics.map((m) => (
+                    <div key={m.label} className="flex-1 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3">
+                      <p className="text-[#E8231A] font-bold text-base leading-none mb-1.5" style={{ fontFamily: 'Poppins' }}>{m.value}</p>
+                      <p className="text-gray-400 text-[10px] leading-tight">{m.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div data-depth="0.45" className="absolute bottom-[22%] left-[10%] w-[14%] h-[14%] rounded-full bg-gray-200 float-a" style={{ animationDelay: '1s', transition: 'transform 0.05s linear' }} />
-      <div data-depth="0.3" className="absolute bottom-[30%] right-[12%] w-[22%] h-[8%] rounded-lg bg-gray-100 border border-gray-200 float-b" style={{ animationDelay: '2s', transition: 'transform 0.06s linear' }} />
-      <div data-depth="0.1" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center float-c" style={{ transition: 'transform 0.09s linear' }}>
-        <div className="bg-white border border-gray-200 rounded-2xl px-6 py-4 shadow-xl shadow-black/5">
-          <p className="text-[#E8231A] font-bold text-3xl" style={{ fontFamily: 'Poppins' }}>360°</p>
-          <p className="text-gray-500 text-xs tracking-widest uppercase mt-1">Growth Partners</p>
-        </div>
-      </div>
-      <div data-depth="0.4" className="absolute top-[6%] left-[4%] bg-white border border-gray-200 rounded-xl px-4 py-2.5 shadow-lg shadow-black/5 float-b" style={{ animationDelay: '0.5s', transition: 'transform 0.05s linear' }}>
-        <p className="text-gray-900 font-bold text-sm" style={{ fontFamily: 'Poppins' }}>50+</p>
-        <p className="text-gray-400 text-[10px] uppercase tracking-wider">Active Brands</p>
-      </div>
-      <div data-depth="0.5" className="absolute bottom-[8%] right-[4%] bg-white border border-gray-200 rounded-xl px-4 py-2.5 shadow-lg shadow-black/5 float-a" style={{ animationDelay: '1.5s', transition: 'transform 0.04s linear' }}>
-        <p className="text-gray-900 font-bold text-sm" style={{ fontFamily: 'Poppins' }}>15+ Yrs</p>
-        <p className="text-gray-400 text-[10px] uppercase tracking-wider">Experience</p>
+
+      {/* Dot indicators */}
+      <div className="flex items-center justify-center gap-2">
+        {carouselSlides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className={`transition-all duration-300 rounded-full ${
+              i === active ? 'w-7 h-2 bg-[#E8231A]' : 'w-2 h-2 bg-gray-200 hover:bg-gray-300'
+            }`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
@@ -128,10 +172,10 @@ function Marquee() {
 }
 
 const stats = [
-  { value: 50, suffix: '+', label: 'Active Brands' },
-  { value: 15, suffix: '+', label: 'Years of Experience' },
-  { value: 360, suffix: '°', label: 'Full-Service Coverage' },
-  { value: 4, suffix: 'x', label: 'Avg. ROAS Delivered' },
+  { display: '15+', label: 'Years of Experience' },
+  { display: '₹100Cr+', label: 'Ad Spends Managed' },
+  { display: '12+', label: 'Industries Served' },
+  { display: '3', label: 'Platform Certifications' },
 ];
 
 const problems = [
@@ -184,6 +228,33 @@ const services = [
   },
 ];
 
+const industries = [
+  { label: 'D2C & E-commerce', sub: 'From launch to scale' },
+  { label: 'FMCG & Retail', sub: 'Brand + shelf presence' },
+  { label: 'Fintech & BFSI', sub: 'Regulated, performance-led' },
+  { label: 'SaaS & Tech', sub: 'Pipeline + product-led growth' },
+  { label: 'Real Estate', sub: 'Lead gen + brand trust' },
+  { label: 'Healthcare', sub: 'Compliant, patient-centric' },
+];
+
+const testimonials = [
+  {
+    quote: 'Social Kutlet is the first agency that explained our numbers in terms of business impact, not marketing metrics.',
+    role: 'Founder',
+    company: 'D2C Skincare Brand, Mumbai',
+  },
+  {
+    quote: 'They rebuilt our entire Meta funnel in 6 weeks. The ROAS improvement was immediate and held for 8 months.',
+    role: 'CMO',
+    company: 'Consumer Electronics Brand',
+  },
+  {
+    quote: "What sets them apart is that they push back when a strategy isn't right. Most agencies just execute. These guys think.",
+    role: 'Growth Lead',
+    company: 'Series A Fintech Startup',
+  },
+];
+
 const featuredCaseStudies = [
   {
     id: 1,
@@ -215,14 +286,16 @@ const featuredCaseStudies = [
 ];
 
 export default function Home() {
-  const hero = useInView(0.1);
-  const statsSection = useInView(0.1);
-  const defineSection = useInView(0.1);
-  const problemsSection = useInView(0.1);
-  const whySection = useInView(0.1);
-  const partnersSection = useInView(0.1);
-  const servicesSection = useInView(0.1);
-  const caseSection = useInView(0.1);
+  const [heroRef, heroInView] = useInView(0.1);
+  const [statsRef, statsInView] = useInView(0.1);
+  const [defineRef, defineInView] = useInView(0.1);
+  const [problemsRef, problemsInView] = useInView(0.1);
+  const [whyRef, whyInView] = useInView(0.1);
+  const [partnersRef, partnersInView] = useInView(0.1);
+  const [servicesRef, servicesInView] = useInView(0.1);
+  const [caseRef, caseInView] = useInView(0.1);
+  const [industriesRef, industriesInView] = useInView(0.1);
+  const [testimonialsRef, testimonialsInView] = useInView(0.1);
 
   return (
     <>
@@ -232,8 +305,8 @@ export default function Home() {
         <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-5 pointer-events-none" style={{ background: 'radial-gradient(circle, #E8231A 0%, transparent 70%)' }} />
 
         <div
-          ref={hero.ref}
-          className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-36 pb-28 grid lg:grid-cols-2 gap-16 items-center transition-all duration-1000 ${hero.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+          ref={heroRef}
+          className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-36 pb-28 grid lg:grid-cols-2 gap-16 items-center transition-all duration-1000 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
         >
           {/* Left: copy */}
           <div>
@@ -242,8 +315,8 @@ export default function Home() {
               360° Growth Partners
             </div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-[0.95] tracking-tight mb-6" style={{ fontFamily: 'Poppins' }}>
-              Your End-to-End
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-[0.95] tracking-tight mb-6" style={{ fontFamily: 'Poppins' }}>
+              Your <span className="whitespace-nowrap">End-to-End</span>
               <br />
               Growth Partners
               <br />
@@ -253,22 +326,22 @@ export default function Home() {
             </h1>
 
             <p className="text-gray-500 text-lg max-w-xl leading-relaxed mb-10" style={{ fontFamily: 'Inter' }}>
-              Every strategy is insight-driven, full-funnel, and engineered to turn attention into measurable outcomes.
+              From performance marketing and organic growth to creative strategy and influencer — one partner, every channel, one outcome.
             </p>
 
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <Link href="/services" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base">
-                Dive into Our Services <ArrowUpRight size={18} />
+                Our Services <ArrowUpRight size={18} />
               </Link>
               <Link href="/case-study" className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-8 py-4 rounded-full hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-base">
-                Read Case Studies
+                See How We&apos;ve Driven Results
               </Link>
             </div>
           </div>
 
-          {/* Right: animation */}
+          {/* Right: hero carousel */}
           <div className="hidden lg:flex items-center justify-center">
-            <HeroAnimation />
+            <HeroCarousel />
           </div>
         </div>
 
@@ -282,17 +355,17 @@ export default function Home() {
       <Marquee />
 
       {/* ══════════════ STATS ══════════════ */}
-      <section className="border-b border-gray-200 bg-white" ref={statsSection.ref}>
+      <section className="border-y border-gray-200 bg-white" ref={statsRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-gray-200">
             {stats.map((stat, i) => (
               <div
                 key={stat.label}
-                className={`py-12 px-8 transition-all duration-700 ${statsSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                className={`py-12 px-8 transition-all duration-700 ${statsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Poppins' }}>
-                  {statsSection.inView ? <Counter target={stat.value} suffix={stat.suffix} /> : `0${stat.suffix}`}
+                  {stat.display}
                 </div>
                 <p className="text-gray-400 text-sm">{stat.label}</p>
               </div>
@@ -302,10 +375,10 @@ export default function Home() {
       </section>
 
       {/* ══════════════ WHAT DEFINES US ══════════════ */}
-      <section className="py-28 px-6 lg:px-8 bg-white" ref={defineSection.ref}>
+      <section className="py-28 px-6 lg:px-8 bg-white" ref={defineRef}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div className={`transition-all duration-700 ${defineSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">What Defines Us</p>
+          <div className={`transition-all duration-700 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Why Social Kutlet</p>
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6" style={{ fontFamily: 'Poppins' }}>
               Brand builders
               <br />
@@ -330,7 +403,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className={`grid grid-cols-2 gap-3 transition-all duration-700 delay-200 ${defineSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`grid grid-cols-3 gap-3 transition-all duration-700 delay-200 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {[
               { label: 'Creative-First', sub: 'Performance-Driven' },
               { label: 'Revenue-Obsessed', sub: 'ROI Focused' },
@@ -338,10 +411,14 @@ export default function Home() {
               { label: 'Data-Driven', sub: 'Insight-Backed' },
               { label: 'Brand-Native', sub: 'Extended Team' },
               { label: '360° Coverage', sub: 'One Roof' },
+              { label: 'Transparent', sub: 'Clear Reporting' },
+              { label: 'Agile', sub: 'Trend-Responsive' },
+              { label: 'Growth-Focused', sub: 'Partnership Mindset' },
             ].map((card, i) => (
-              <div key={i} className={`bg-gray-50 border border-gray-200 rounded-2xl p-5 hover:border-[#E8231A]/20 hover:bg-white transition-all ${i === 0 ? 'col-span-2' : ''}`}>
-                <p className="text-gray-900 font-bold text-lg mb-1" style={{ fontFamily: 'Poppins' }}>{card.label}</p>
-                <p className="text-gray-400 text-sm">{card.sub}</p>
+              <div key={i} className="bg-gray-50 border border-gray-200 rounded-2xl p-5 hover:border-[#E8231A]/20 hover:bg-white hover:shadow-md hover:shadow-black/5 transition-all duration-200 flex flex-col gap-1">
+                <div className="w-1.5 h-1.5 bg-[#E8231A] rounded-full mb-2" />
+                <p className="text-gray-900 font-bold text-sm leading-snug" style={{ fontFamily: 'Poppins' }}>{card.label}</p>
+                <p className="text-gray-400 text-xs">{card.sub}</p>
               </div>
             ))}
           </div>
@@ -349,9 +426,9 @@ export default function Home() {
       </section>
 
       {/* ══════════════ PROBLEMS WE SOLVE ══════════════ */}
-      <section className="py-28 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={problemsSection.ref}>
+      <section className="py-28 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={problemsRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`mb-14 max-w-2xl transition-all duration-700 ${problemsSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`mb-14 max-w-2xl transition-all duration-700 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Sound Familiar?</p>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight" style={{ fontFamily: 'Poppins' }}>
               If your brand is facing
@@ -366,7 +443,7 @@ export default function Home() {
             {problems.map((problem, i) => (
               <div
                 key={i}
-                className={`bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#E8231A]/20 hover:shadow-lg hover:shadow-black/5 transition-all duration-500 ${problemsSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                className={`bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#E8231A]/20 hover:shadow-lg hover:shadow-black/5 transition-all duration-500 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
                 <div className="w-10 h-10 bg-[#E8231A]/8 rounded-xl flex items-center justify-center mb-4">
@@ -376,13 +453,19 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          <div className={`mt-12 text-center transition-all duration-700 delay-300 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200">
+              Let&apos;s Fix This <ArrowUpRight size={18} />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ══════════════ WHY CHOOSE US ══════════════ */}
-      <section className="py-28 px-6 lg:px-8 bg-white" ref={whySection.ref}>
+      <section className="py-28 px-6 lg:px-8 bg-white" ref={whyRef}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div className={`transition-all duration-700 ${whySection.inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          <div className={`transition-all duration-700 ${whyInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Why Choose Us</p>
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Poppins' }}>
               The agency
@@ -400,7 +483,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className={`grid gap-3 transition-all duration-700 delay-200 ${whySection.inView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          <div className={`grid gap-3 transition-all duration-700 delay-200 ${whyInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             {whyUs.map((item, i) => (
               <div key={i} className="flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 hover:border-[#E8231A]/20 hover:bg-white transition-all">
                 <CheckCircle2 size={18} className="text-[#E8231A] mt-0.5 shrink-0" />
@@ -412,16 +495,16 @@ export default function Home() {
       </section>
 
       {/* ══════════════ TRUSTED PARTNERS ══════════════ */}
-      <section className="py-20 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={partnersSection.ref}>
+      <section className="py-20 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={partnersRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`text-center mb-12 transition-all duration-700 ${partnersSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`text-center mb-12 transition-all duration-700 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Our Trusted Partners</p>
             <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
               Backed by the world&apos;s leading platforms.
             </h2>
           </div>
 
-          <div className={`flex flex-col sm:flex-row items-center justify-center gap-6 transition-all duration-700 delay-200 ${partnersSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`flex flex-col sm:flex-row items-center justify-center gap-6 transition-all duration-700 delay-200 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {[
               { src: '/logos/google-logo.webp', alt: 'Google Premier Partner', tag: 'Premier Partner' },
               { src: '/logos/meta-logo.png',    alt: 'Meta Business Partner',  tag: 'Business Partner' },
@@ -451,9 +534,9 @@ export default function Home() {
       </section>
 
       {/* ══════════════ SERVICES ══════════════ */}
-      <section className="py-28 px-6 lg:px-8 bg-white" ref={servicesSection.ref}>
+      <section className="py-28 px-6 lg:px-8 bg-white" ref={servicesRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 transition-all duration-700 ${servicesSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 transition-all duration-700 ${servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div>
               <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">What We Do</p>
               <h2 className="text-5xl md:text-6xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
@@ -461,6 +544,7 @@ export default function Home() {
                 <br />
                 One engine.
               </h2>
+              <p className="text-gray-400 mt-3 text-base">Every pillar works alone, together they compound.</p>
             </div>
             <Link href="/services" className="self-start md:self-auto inline-flex items-center gap-2 text-gray-400 hover:text-gray-900 text-sm font-medium transition-colors">
               Learn More <ArrowUpRight size={14} />
@@ -471,7 +555,7 @@ export default function Home() {
             {services.map((svc, i) => (
               <div
                 key={svc.title}
-                className={`group bg-gray-50 border border-gray-200 rounded-2xl p-8 hover:border-[#E8231A]/25 hover:bg-white hover:shadow-xl hover:shadow-black/5 transition-all duration-500 ${servicesSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                className={`group bg-gray-50 border border-gray-200 rounded-2xl p-8 hover:border-[#E8231A]/25 hover:bg-white hover:shadow-xl hover:shadow-black/5 transition-all duration-500 ${servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                 style={{ transitionDelay: `${i * 150}ms` }}
               >
                 <div className="flex items-start justify-between mb-8">
@@ -501,10 +585,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ CASE STUDIES ══════════════ */}
-      <section className="py-28 px-6 lg:px-8 bg-gray-50 border-t border-gray-200" ref={caseSection.ref}>
+      {/* ══════════════ INDUSTRIES WE SERVE ══════════════ */}
+      <section className="py-20 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={industriesRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 transition-all duration-700 ${caseSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`mb-12 transition-all duration-700 ${industriesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Industries We Serve</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
+              Deep expertise across the categories that matter.
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {industries.map((ind, i) => (
+              <div
+                key={ind.label}
+                className={`group bg-white border border-gray-200 rounded-2xl p-6 flex items-start gap-4 hover:border-[#E8231A]/20 hover:shadow-md hover:shadow-black/5 transition-all duration-300 ${industriesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
+                <div className="w-10 h-10 bg-[#E8231A]/8 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-[#E8231A]/15 transition-colors">
+                  <div className="w-2 h-2 bg-[#E8231A] rounded-full" />
+                </div>
+                <div>
+                  <p className="text-gray-900 font-semibold text-sm mb-1" style={{ fontFamily: 'Poppins' }}>{ind.label}</p>
+                  <p className="text-gray-400 text-xs">{ind.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════ CASE STUDIES ══════════════ */}
+      <section className="py-28 px-6 lg:px-8 bg-gray-50 border-t border-gray-200" ref={caseRef}>
+        <div className="max-w-7xl mx-auto">
+          <div className={`flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 transition-all duration-700 ${caseInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div>
               <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Case Studies</p>
               <h2 className="text-5xl md:text-6xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
@@ -512,6 +625,7 @@ export default function Home() {
                 <br />
                 <span className="text-[#E8231A]">Results that last.</span>
               </h2>
+              <p className="text-gray-400 mt-3 text-base">Real brand strategies. Real strategies. Real numbers.</p>
             </div>
             <Link href="/case-study" className="self-start md:self-auto inline-flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-full hover:border-gray-400 hover:bg-white transition-all text-sm">
               Read Our Success Stories <ArrowUpRight size={14} />
@@ -522,7 +636,7 @@ export default function Home() {
             {featuredCaseStudies.map((study, i) => (
               <div
                 key={study.id}
-                className={`group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-[#E8231A]/25 hover:shadow-xl hover:shadow-black/5 transition-all duration-500 flex flex-col ${caseSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                className={`group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-[#E8231A]/25 hover:shadow-xl hover:shadow-black/5 transition-all duration-500 flex flex-col ${caseInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 
@@ -564,21 +678,59 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ══════════════ TESTIMONIALS ══════════════ */}
+      <section className="py-24 px-6 lg:px-8 bg-white border-t border-gray-200" ref={testimonialsRef}>
+        <div className="max-w-7xl mx-auto">
+          <div className={`mb-12 transition-all duration-700 ${testimonialsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">What Our Clients Say</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
+              Heard directly from the brands we work with.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {testimonials.map((t, i) => (
+              <div
+                key={i}
+                className={`group bg-gray-50 border border-gray-200 rounded-2xl p-7 flex flex-col hover:border-[#E8231A]/20 hover:bg-white hover:shadow-lg hover:shadow-black/5 transition-all duration-300 ${testimonialsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                <span className="text-[#E8231A]/30 text-5xl font-serif leading-none mb-4">&ldquo;</span>
+                <p className="text-gray-600 text-sm leading-relaxed flex-1 mb-6">{t.quote}</p>
+                <div className="flex items-center gap-3 border-t border-gray-200 pt-5">
+                  <div className="w-8 h-8 rounded-full bg-[#E8231A]/10 flex items-center justify-center shrink-0">
+                    <span className="text-[#E8231A] text-xs font-bold">{t.role[0]}</span>
+                  </div>
+                  <div>
+                    <p className="text-gray-900 text-sm font-semibold">{t.role}</p>
+                    <p className="text-gray-400 text-xs mt-0.5">{t.company}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══════════════ BOTTOM CTA ══════════════ */}
       <section className="py-28 px-6 lg:px-8 bg-white border-t border-gray-200">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">360° Growth Awaits</p>
+          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">Ready to Scale?</p>
           <h2 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Poppins' }}>
-            Your brand&apos;s next chapter
+            Let&apos;s build something
             <br />
-            starts here.
+            <span className="text-[#E8231A]">remarkable.</span>
           </h2>
           <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
             Let&apos;s talk about your goals and build the strategy that gets you there.
           </p>
-          <Link href="/contact" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-10 py-5 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base">
-            Let&apos;s Talk <ArrowUpRight size={18} />
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-10 py-5 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base">
+              Book a Call <ArrowUpRight size={18} />
+            </Link>
+            <Link href="/case-study" className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-10 py-5 rounded-full hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-base">
+              See our Work first
+            </Link>
+          </div>
         </div>
       </section>
     </>

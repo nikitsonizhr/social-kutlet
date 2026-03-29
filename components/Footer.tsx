@@ -44,12 +44,20 @@ export default function Footer() {
               <span className="text-[#E8231A]">remarkable.</span>
             </h2>
           </div>
-          <Link
-            href="/contact"
-            className="flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base whitespace-nowrap"
-          >
-            Start a Project <ArrowUpRight size={18} />
-          </Link>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <Link
+              href="/contact"
+              className="flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base whitespace-nowrap"
+            >
+              Book a Call <ArrowUpRight size={18} />
+            </Link>
+            <Link
+              href="/case-study"
+              className="flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-8 py-4 rounded-full hover:border-gray-400 hover:bg-white transition-all duration-200 text-base whitespace-nowrap"
+            >
+              See our Work first
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -68,7 +76,7 @@ export default function Footer() {
             />
           </div>
           <p className="text-gray-500 text-sm leading-relaxed max-w-xs mb-6">
-            360° solutions for brands — from organic growth to demand generation and creative communication.
+            360° solutions for brands — Performance, Organic, Creative, all under one roof.
           </p>
           <div className="flex items-center gap-3">
             {socials.map(({ label, svg, href }) => (
@@ -113,7 +121,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Social Kutlet. All rights reserved.
           </p>
           <p className="text-gray-400 text-sm">
-            360° Solutions for Brands
+            360° solutions for brands — Performance, Organic, Creative, all under one roof.
           </p>
         </div>
       </div>
