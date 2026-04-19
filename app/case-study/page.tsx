@@ -18,68 +18,118 @@ function useInView(threshold = 0.1) {
   return { ref, inView };
 }
 
-const categories = ['All', 'Organic Marketing', 'Demand Generation', 'Creative'];
+const categories = ['All', 'D2C & E-commerce', 'FMCG & Food', 'Beauty & Lifestyle', 'F&B & Healthcare'];
 
 const caseStudies = [
   {
     id: 1,
-    client: 'D2C Fashion Brand',
-    category: 'Demand Generation',
-    title: '4.2x ROAS in 90 days with performance-led creative',
-    desc: 'A struggling D2C fashion label was burning budget on Meta with no returns. We rebuilt their funnel, introduced UGC-style creative, and scaled to ₹50L/month profitable spend.',
-    metrics: [{ label: 'ROAS', value: '4.2x' }, { label: 'Revenue Growth', value: '+280%' }, { label: 'CAC Reduction', value: '-42%' }],
-    tag: 'Featured',
-    accent: '#E8231A',
+    slug: 'two-brothers-organic-farms',
+    client: 'Two Brothers Organic Farms',
+    category: 'FMCG & Food',
+    title: '8X revenue growth during a high-stakes New Year sale',
+    desc: 'We built a full-funnel performance system — scaling Performance Max and Shopping campaigns 120%, deploying video + discovery prospecting, and segmenting high-intent audiences — to deliver exponential growth while improving efficiency.',
+    metrics: [{ label: 'Revenue Growth', value: '8X' }, { label: 'User Acquisition', value: '5.5X' }, { label: 'ROAS Improvement', value: '+60%' }],
+    tag: 'Performance Marketing',
   },
   {
     id: 2,
-    client: 'B2B SaaS',
-    category: 'Organic Marketing',
-    title: 'From 500 to 15,000 monthly organic visitors in 6 months',
-    desc: 'A B2B SaaS startup with zero organic presence needed to build pipeline without depending entirely on paid. Our SEO and content strategy delivered 30x traffic growth.',
-    metrics: [{ label: 'Traffic Growth', value: '30x' }, { label: 'Organic Leads', value: '+320%' }, { label: 'Domain Rating', value: '42 → 67' }],
-    tag: 'SEO',
-    accent: '#E8231A',
+    slug: 'adil-qadri',
+    client: 'Adil Qadri — Shark Tank Featured',
+    category: 'Beauty & Lifestyle',
+    title: '800% ad spend scale with 170% ROAS improvement',
+    desc: "Discovery-led scaling with founder-driven and vernacular content enabled high-growth, efficient scaling for India's largest Shark Tank featured attar and fragrance brand.",
+    metrics: [{ label: 'Ad Spend Scale', value: '+800%' }, { label: 'ROAS Improvement', value: '+170%' }, { label: 'Conversions', value: '125X' }],
+    tag: 'Demand Generation',
   },
   {
     id: 3,
-    client: 'E-commerce FMCG',
-    category: 'Creative',
-    title: 'Brand refresh that increased engagement by 3x across social',
-    desc: 'An established FMCG brand was invisible on social despite a large following. A creative overhaul — new visual identity, content system, and tone of voice — drove massive organic engagement.',
-    metrics: [{ label: 'Engagement Rate', value: '3.1x' }, { label: 'Follower Growth', value: '+85K' }, { label: 'UGC Generated', value: '2,000+' }],
-    tag: 'Creative',
-    accent: '#E8231A',
+    slug: 'neuberg-diagnostics',
+    client: 'Neuberg Diagnostics',
+    category: 'F&B & Healthcare',
+    title: '55% lead growth with 24% CPL reduction across 5 cities',
+    desc: 'A Google-first, intent-led strategy across Bangalore, Chennai, Mumbai, Kolkata, and Pune built a scalable, city-wise lead engine — consistently improving CPL, registration rates, and revenue over six months.',
+    metrics: [{ label: 'Lead Growth', value: '+55%' }, { label: 'CPL Reduction', value: '-24%' }, { label: 'Revenue Growth', value: '+43%' }],
+    tag: 'Healthcare Lead Gen',
   },
   {
     id: 4,
-    client: 'Fintech App',
-    category: 'Demand Generation',
-    title: 'Affiliate-led acquisition: 50,000 users in 3 months via CRED & GPay',
-    desc: 'A fintech startup needed rapid user acquisition. We built a performance affiliate program on CRED, GPay, and PhonePe — acquiring 50K qualified users at ₹18 CAC.',
-    metrics: [{ label: 'Users Acquired', value: '50K' }, { label: 'CAC', value: '₹18' }, { label: 'Activation Rate', value: '67%' }],
-    tag: 'Affiliate',
-    accent: '#E8231A',
+    slug: 'anveshan',
+    client: 'Anveshan',
+    category: 'FMCG & Food',
+    title: '66% order volume growth through category expansion strategy',
+    desc: "We launched Performance Max campaigns with shopping feeds, introduced a sampler kit strategy to drive cold-pressed oil trials, and built a performance-led retargeting funnel for India's largest ghee and oil brand.",
+    metrics: [{ label: 'Order Volume', value: '+66%' }, { label: 'Category Revenue', value: '+33%' }, { label: 'Ad Spend Scale', value: '+20%' }],
+    tag: 'Performance Marketing',
   },
   {
     id: 5,
-    client: 'Luxury Skincare',
-    category: 'Organic Marketing',
-    title: 'CRO optimisation: +68% checkout completion rate',
-    desc: 'A premium skincare brand had strong traffic but a leaky funnel. Through rigorous CRO testing — from product pages to checkout — we improved their conversion rate significantly.',
-    metrics: [{ label: 'Checkout Rate', value: '+68%' }, { label: 'AOV', value: '+22%' }, { label: 'Revenue Impact', value: '+₹1.2Cr' }],
-    tag: 'CRO',
-    accent: '#E8231A',
+    slug: 'eggoz',
+    client: 'Eggoz',
+    category: 'FMCG & Food',
+    title: '30 million users reached with high-frequency video strategy',
+    desc: "We deployed video views and reach campaigns with a high-frequency targeting strategy, combined with sequential storytelling and remarketing, to drive brand recall for India's largest egg and poultry brand.",
+    metrics: [{ label: 'Users Reached', value: '30M' }, { label: 'Avg Frequency', value: '8x' }, { label: 'Market Coverage', value: 'Delhi + Bangalore' }],
+    tag: 'Brand Awareness',
   },
   {
     id: 6,
-    client: 'EdTech Platform',
-    category: 'Demand Generation',
-    title: 'Programmatic campaign delivers 1M reach at ₹0.4 CPM',
-    desc: 'An edtech platform needed affordable brand awareness at scale. DV360 programmatic campaigns delivered unparalleled reach with premium placements at budget-friendly CPMs.',
-    metrics: [{ label: 'Total Reach', value: '1M+' }, { label: 'CPM', value: '₹0.4' }, { label: 'Brand Recall Lift', value: '+34%' }],
-    tag: 'Programmatic',
-    accent: '#E8231A',
+    slug: 'phool',
+    client: 'Phool',
+    category: 'D2C & E-commerce',
+    title: '24% revenue growth through AOV and acquisition strategy',
+    desc: "We focused on new user acquisition, introduced bundled gifting combinations to improve AOV, and leveraged brand collaborations and retargeting to scale India's largest digital-first fragrance and incense brand.",
+    metrics: [{ label: 'Revenue Growth', value: '+24%' }, { label: 'AOV Improvement', value: '+22%' }, { label: 'CAC Improvement', value: '-19%' }],
+    tag: 'D2C Growth',
+  },
+  {
+    id: 7,
+    slug: 'bombay-sweet-shop',
+    client: 'Bombay Sweet Shop',
+    category: 'FMCG & Food',
+    title: '1,300 leads generated with 32.6% qualification rate',
+    desc: 'We built a clear brand persona and audience segmentation across corporate, wedding, and personal gifting cohorts — running lead generation and retargeting campaigns across Meta and Google for this premium gifting brand.',
+    metrics: [{ label: 'Leads Generated', value: '1,300' }, { label: 'Qualification Rate', value: '32.6%' }, { label: 'Lead Quality', value: 'High' }],
+    tag: 'Lead Generation',
+  },
+  {
+    id: 8,
+    slug: 'foxtale',
+    client: 'Foxtale',
+    category: 'Beauty & Lifestyle',
+    title: '200% ad spend scale with improved ROAS on Google Ads',
+    desc: 'We restructured Performance Max by separating assets, launching dedicated display campaigns, and introducing a multi-campaign structure — enabling aggressive scale while improving ROAS for this D2C skincare brand.',
+    metrics: [{ label: 'Ad Spend Scale', value: '+200%' }, { label: 'ROAS Improvement', value: '+10%' }, { label: 'Creative Control', value: 'Enhanced' }],
+    tag: 'Google Ads',
+  },
+  {
+    id: 9,
+    slug: 'tata-simply-better',
+    client: 'Tata Simply Better',
+    category: 'FMCG & Food',
+    title: '25–30% MoM sales growth with 2X order volume in 6 months',
+    desc: 'We implemented a full-funnel multi-channel performance system, deployed a Test & Learn model, built seasonality-led GTM plans, and activated vernacular creatives across key regions for this cold-pressed oils brand.',
+    metrics: [{ label: 'MoM Sales Growth', value: '25–30%' }, { label: 'Order Volume', value: '2X' }, { label: 'AOV Uplift', value: '+20%' }],
+    tag: 'FMCG Performance',
+  },
+  {
+    id: 10,
+    slug: 'jodi-life',
+    client: 'Jodi Life',
+    category: 'D2C & E-commerce',
+    title: '71% CAC reduction for a premium handcrafted fashion label',
+    desc: 'A continuous Test & Learn methodology, structured funnel marketing, and story-driven creatives enabled Jodi Life to significantly reduce acquisition costs, grow revenue, and expand across India and 50+ countries.',
+    metrics: [{ label: 'CAC Reduction', value: '-71%' }, { label: 'Revenue Growth', value: '+60%' }, { label: 'AOV Increase', value: '+32%' }],
+    tag: 'Fashion & Lifestyle',
+  },
+  {
+    id: 11,
+    slug: 'koko',
+    client: 'KOKO — Multi-City Fine Dining',
+    category: 'F&B & Healthcare',
+    title: '68% engagement growth and 3.2X reach across 4 city markets',
+    desc: 'We built aspirational content pillars, ran city-specific influencer campaigns, and deployed precision lead capture for reservations — helping KOKO attract the right diners and build momentum for its Goregaon launch.',
+    metrics: [{ label: 'Engagement Growth', value: '+68%' }, { label: 'Reach Growth', value: '3.2X' }, { label: 'Lead Quality Uplift', value: '+74%' }],
+    tag: 'F&B Marketing',
   },
 ];
 
@@ -127,7 +177,7 @@ export default function CaseStudyPage() {
 
       {/* ══════════════ FILTERS ══════════════ */}
       <section className="border-y border-gray-200 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex items-center gap-3 overflow-x-auto horizontal-scroll">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex items-center gap-3 overflow-x-auto">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -145,7 +195,7 @@ export default function CaseStudyPage() {
       </section>
 
       {/* ══════════════ GRID ══════════════ */}
-      <section className="py-20 px-6 lg:px-8 bg-white" ref={grid.ref}>
+      <section className="py-16 px-6 lg:px-8 bg-white" ref={grid.ref}>
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((study, i) => (
@@ -154,29 +204,12 @@ export default function CaseStudyPage() {
                 className={`group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-[#E8231A]/25 hover:shadow-xl hover:shadow-black/5 transition-all duration-500 flex flex-col ${
                   grid.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}
-                style={{ transitionDelay: `${i * 80}ms` }}
+                style={{ transitionDelay: `${i * 60}ms` }}
               >
-                {/*
-                  IMAGE SLOT — replace inner div with:
-                  <Image src={study.image} alt={study.client} fill className="object-cover" />
-                  Recommended: 800×480px brand/campaign screenshot
-                */}
-                <div className="h-52 relative overflow-hidden bg-gray-50">
-                  <div
-                    className="absolute inset-0 opacity-10"
-                    style={{ background: `radial-gradient(ellipse at 70% 30%, ${study.accent} 0%, transparent 60%)` }}
-                  />
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundImage: 'linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)',
-                      backgroundSize: '24px 24px',
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-gray-300 text-xs uppercase tracking-widest">Add image</span>
-                  </div>
-                  {/* Bottom tag row */}
+                {/* Image / placeholder */}
+                <div className="h-48 relative overflow-hidden bg-gray-50">
+                  <div className="absolute inset-0 opacity-10" style={{ background: 'radial-gradient(ellipse at 70% 30%, #E8231A 0%, transparent 60%)' }} />
+                  <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
                   <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between bg-gradient-to-t from-gray-50 to-transparent">
                     <span className="bg-[#E8231A]/10 text-[#E8231A] text-xs font-semibold px-3 py-1 rounded-full border border-[#E8231A]/15">
                       {study.tag}
@@ -197,24 +230,23 @@ export default function CaseStudyPage() {
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{study.desc}</p>
 
-                  {/* Metrics */}
                   <div className="grid grid-cols-3 gap-3 mb-6">
                     {study.metrics.map((m) => (
                       <div key={m.label} className="bg-gray-50 rounded-lg p-3 text-center border border-gray-100">
-                        <div
-                          className="text-[#E8231A] font-bold text-sm mb-0.5"
-                          style={{ fontFamily: 'Poppins' }}
-                        >
+                        <div className="text-[#E8231A] font-bold text-sm mb-0.5" style={{ fontFamily: 'Poppins' }}>
                           {m.value}
                         </div>
-                        <div className="text-gray-400 text-xs leading-tight">{m.label}</div>
+                        <div className="text-gray-400 text-[10px] leading-tight">{m.label}</div>
                       </div>
                     ))}
                   </div>
 
-                  <button className="inline-flex items-center gap-1.5 text-[#E8231A] text-sm font-medium group-hover:gap-2.5 transition-all">
+                  <Link
+                    href={`/case-study/${study.slug}`}
+                    className="inline-flex items-center gap-1.5 text-[#E8231A] text-sm font-medium group-hover:gap-2.5 transition-all"
+                  >
                     Read Case Study <ArrowUpRight size={14} />
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -229,7 +261,7 @@ export default function CaseStudyPage() {
       </section>
 
       {/* ══════════════ BOTTOM CTA ══════════════ */}
-      <section className="py-24 px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
+      <section className="py-20 px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">
             Be our next success story

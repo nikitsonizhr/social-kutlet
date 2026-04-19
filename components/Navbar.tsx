@@ -76,10 +76,10 @@ export default function Navbar() {
           <Link href="/" className="flex items-center">
             <Image
               src="/logos/brand-logo.png"
-              alt="Social &utlet"
-              width={320}
-              height={80}
-              className="object-contain h-30 w-auto max-w-[280px]"
+              alt="Social Kutlet"
+              width={360}
+              height={90}
+              className="object-contain h-14 w-auto max-w-[320px]"
               priority
             />
           </Link>
