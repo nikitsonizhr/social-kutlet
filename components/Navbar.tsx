@@ -71,15 +71,15 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           {/* Logo — file: public/logos/brand-logo.png */}
           <Link href="/" className="flex items-center">
             <Image
               src="/logos/brand-logo.png"
               alt="Social Kutlet"
-              width={360}
-              height={90}
-              className="object-contain h-14 w-auto max-w-[320px]"
+              width={480}
+              height={120}
+              className="object-contain h-20 w-auto max-w-[420px]"
               priority
             />
           </Link>
