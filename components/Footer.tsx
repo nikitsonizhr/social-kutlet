@@ -36,7 +36,7 @@ export default function Footer() {
           <div>
             <p className="text-gray-400 text-sm uppercase tracking-widest mb-3">Ready to scale?</p>
             <h2
-              className="text-4xl md:text-5xl font-bold text-gray-900"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900"
               style={{ fontFamily: 'Poppins' }}
             >
               Let&apos;s build something
@@ -47,13 +47,13 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             <Link
               href="/contact"
-              className="flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base whitespace-nowrap"
+              className="flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg px-10 py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200 text-base whitespace-nowrap"
             >
               Book a Call <ArrowUpRight size={18} />
             </Link>
             <Link
               href="/case-study"
-              className="flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-8 py-4 rounded-full hover:border-gray-400 hover:bg-white transition-all duration-200 text-base whitespace-nowrap"
+              className="flex items-center gap-2 border border-gray-300 text-gray-700 font-semibold px-8 py-4 rounded-full hover:border-gray-400 hover:bg-white transition-all duration-200 text-base whitespace-nowrap"
             >
               See our Work first
             </Link>
@@ -72,10 +72,10 @@ export default function Footer() {
               alt="Social &utlet"
               width={280}
               height={72}
-              className="object-contain h-44 w-auto max-w-[220px]"
+              className="object-contain h-12 w-auto max-w-40"
             />
           </div>
-          <p className="text-gray-500 text-sm leading-relaxed max-w-xs mb-6">
+          <p className="text-gray-600 text-sm font-medium leading-relaxed max-w-xs mb-6">
             360° solutions for brands — Performance, Organic, Creative, all under one roof.
           </p>
           <div className="flex items-center gap-3">
@@ -97,13 +97,13 @@ export default function Footer() {
         {/* Links */}
         {Object.entries(footerLinks).map(([category, links]) => (
           <div key={category}>
-            <p className="text-gray-900 font-semibold text-sm mb-5">{category}</p>
+            <p className="text-gray-900 font-extrabold text-sm mb-5">{category}</p>
             <ul className="space-y-3">
               {links.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
-                    className="text-gray-500 hover:text-gray-900 text-sm transition-colors duration-150"
+                    className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors duration-150"
                   >
                     {label}
                   </Link>
@@ -117,10 +117,10 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-500 text-sm font-medium">
             © {new Date().getFullYear()} Social Kutlet. All rights reserved.
           </p>
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-500 text-sm font-medium">
             360° solutions for brands — Performance, Organic, Creative, all under one roof.
           </p>
         </div>

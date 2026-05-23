@@ -101,9 +101,9 @@ export default function StrategyPage() {
             hero.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}
         >
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">Our Strategy</p>
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">Our Strategy</p>
           <h1
-            className="text-6xl md:text-8xl font-bold text-gray-900 leading-[0.9] tracking-tight mb-8 max-w-4xl"
+            className="text-6xl md:text-8xl font-extrabold text-gray-900 leading-[0.9] tracking-tight mb-8 max-w-4xl"
             style={{ fontFamily: 'Poppins' }}
           >
             Growth by
@@ -127,9 +127,9 @@ export default function StrategyPage() {
               pillarsSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Strategic Pillars</p>
+            <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">Strategic Pillars</p>
             <h2
-              className="text-5xl md:text-6xl font-bold text-gray-900"
+              className="text-5xl md:text-6xl font-extrabold text-gray-900"
               style={{ fontFamily: 'Poppins' }}
             >
               How we think
@@ -151,7 +151,7 @@ export default function StrategyPage() {
                   <pillar.icon size={22} className="text-[#E8231A]" />
                 </div>
                 <h3
-                  className="text-2xl font-bold text-gray-900 mb-3"
+                  className="text-2xl font-extrabold text-gray-900 mb-3"
                   style={{ fontFamily: 'Poppins' }}
                 >
                   {pillar.title}
@@ -179,9 +179,9 @@ export default function StrategyPage() {
               frameworkSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Engagement Model</p>
+            <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">Engagement Model</p>
             <h2
-              className="text-5xl md:text-6xl font-bold text-gray-900"
+              className="text-5xl md:text-6xl font-extrabold text-gray-900"
               style={{ fontFamily: 'Poppins' }}
             >
               From day one
@@ -206,7 +206,7 @@ export default function StrategyPage() {
                 <div className="w-px h-12 bg-gray-200 hidden md:block" />
                 <div className="flex-1">
                   <h3
-                    className="text-xl font-bold text-gray-900 mb-2"
+                    className="text-xl font-extrabold text-gray-900 mb-2"
                     style={{ fontFamily: 'Poppins' }}
                   >
                     {phase.title}
@@ -227,11 +227,11 @@ export default function StrategyPage() {
             ctaSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">
             Ready to strategise?
           </p>
           <h2
-            className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
+            className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6"
             style={{ fontFamily: 'Poppins' }}
           >
             Let&apos;s map your
@@ -245,7 +245,7 @@ export default function StrategyPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200"
+              className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg px-10 py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200"
             >
               Book a Strategy Call <ArrowUpRight size={18} />
             </Link>

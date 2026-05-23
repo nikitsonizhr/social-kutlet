@@ -57,7 +57,7 @@ const caseStudies = [
     client: 'Anveshan',
     category: 'FMCG & Food',
     title: '66% order volume growth through category expansion strategy',
-    desc: "We launched Performance Max campaigns with shopping feeds, introduced a sampler kit strategy to drive cold-pressed oil trials, and built a performance-led retargeting funnel for India's largest ghee and oil brand.",
+    desc: "We launched Performance Max campaigns with shopping feeds, introduced a sampler kit strategy to drive cold-pressed oil trials, and built a high-performance retargeting funnel for India's largest ghee and oil brand.",
     metrics: [{ label: 'Order Volume', value: '+66%' }, { label: 'Category Revenue', value: '+33%' }, { label: 'Ad Spend Scale', value: '+20%' }],
     tag: 'Performance Marketing',
   },
@@ -154,13 +154,13 @@ export default function CaseStudyPage() {
         />
         <div
           ref={hero.ref}
-          className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-40 pb-20 transition-all duration-1000 ${
+          className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 md:pt-40 pb-20 transition-all duration-1000 ${
             hero.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}
         >
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">Case Studies</p>
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">Case Studies</p>
           <h1
-            className="text-6xl md:text-8xl font-bold text-gray-900 leading-[0.9] tracking-tight mb-8 max-w-4xl"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 leading-[0.9] tracking-tight mb-8 max-w-4xl"
             style={{ fontFamily: 'Poppins' }}
           >
             Results that
@@ -211,7 +211,7 @@ export default function CaseStudyPage() {
                   <div className="absolute inset-0 opacity-10" style={{ background: 'radial-gradient(ellipse at 70% 30%, #E8231A 0%, transparent 60%)' }} />
                   <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
                   <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between bg-gradient-to-t from-gray-50 to-transparent">
-                    <span className="bg-[#E8231A]/10 text-[#E8231A] text-xs font-semibold px-3 py-1 rounded-full border border-[#E8231A]/15">
+                    <span className="bg-[#E8231A]/10 text-[#E8231A] text-xs font-extrabold px-3 py-1 rounded-full border border-[#E8231A]/15">
                       {study.tag}
                     </span>
                     <span className="text-gray-400 text-xs">{study.category}</span>
@@ -219,11 +219,8 @@ export default function CaseStudyPage() {
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
-                  <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-2">
-                    {study.client}
-                  </p>
                   <h3
-                    className="text-lg font-bold text-gray-900 mb-3 leading-tight"
+                    className="text-lg font-extrabold text-gray-900 mb-3 leading-tight"
                     style={{ fontFamily: 'Poppins' }}
                   >
                     {study.title}
@@ -233,7 +230,7 @@ export default function CaseStudyPage() {
                   <div className="grid grid-cols-3 gap-3 mb-6">
                     {study.metrics.map((m) => (
                       <div key={m.label} className="bg-gray-50 rounded-lg p-3 text-center border border-gray-100">
-                        <div className="text-[#E8231A] font-bold text-sm mb-0.5" style={{ fontFamily: 'Poppins' }}>
+                        <div className="text-[#E8231A] font-extrabold text-sm mb-0.5" style={{ fontFamily: 'Poppins' }}>
                           {m.value}
                         </div>
                         <div className="text-gray-400 text-[10px] leading-tight">{m.label}</div>
@@ -263,11 +260,11 @@ export default function CaseStudyPage() {
       {/* ══════════════ BOTTOM CTA ══════════════ */}
       <section className="py-20 px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">
             Be our next success story
           </p>
           <h2
-            className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
+            className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6"
             style={{ fontFamily: 'Poppins' }}
           >
             Your results could
@@ -279,7 +276,7 @@ export default function CaseStudyPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-10 py-5 rounded-full hover:bg-gray-900 transition-colors duration-200"
+            className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg px-10 py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200"
           >
             Start a Conversation <ArrowUpRight size={18} />
           </Link>

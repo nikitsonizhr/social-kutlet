@@ -205,7 +205,7 @@ function ServiceAccordion({ service }: { service: typeof serviceCategories[0]['s
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
       >
-        <span className="text-gray-900 font-semibold text-base" style={{ fontFamily: 'Poppins' }}>
+        <span className="text-gray-900 font-extrabold text-base" style={{ fontFamily: 'Poppins' }}>
           {service.name}
         </span>
         <ChevronDown
@@ -252,17 +252,17 @@ function CategorySection({ category, alt }: { category: typeof serviceCategories
               <div className="w-10 h-10 bg-[#E8231A]/8 rounded-lg flex items-center justify-center">
                 <category.icon size={18} className="text-[#E8231A]" />
               </div>
-              <span className="text-gray-200 text-3xl font-bold" style={{ fontFamily: 'Poppins' }}>
+              <span className="text-gray-200 text-3xl font-extrabold" style={{ fontFamily: 'Poppins' }}>
                 {category.number}
               </span>
             </div>
             <h2
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight"
+              className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight"
               style={{ fontFamily: 'Poppins' }}
             >
               {category.title}
             </h2>
-            <p className="text-[#E8231A] text-sm font-semibold mb-4">{category.tagline}</p>
+            <p className="text-[#E8231A] text-sm font-extrabold mb-4">{category.tagline}</p>
             <p className="text-gray-600 text-base leading-relaxed mb-8">{category.description}</p>
             <Link
               href="/contact"
@@ -305,9 +305,9 @@ export default function ServicesPage() {
             hero.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}
         >
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">Our Services</p>
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">Our Services</p>
           <h1
-            className="text-6xl md:text-8xl font-bold text-gray-900 leading-[0.9] tracking-tight mb-8 max-w-4xl"
+            className="text-6xl md:text-8xl font-extrabold text-gray-900 leading-[0.9] tracking-tight mb-8 max-w-4xl"
             style={{ fontFamily: 'Poppins' }}
           >
             Everything your
@@ -330,11 +330,11 @@ export default function ServicesPage() {
       {/* ══════════════ CTA ══════════════ */}
       <section className="py-20 px-6 lg:px-8 border-t border-gray-200 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">
             Not sure where to start?
           </p>
           <h2
-            className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
+            className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6"
             style={{ fontFamily: 'Poppins' }}
           >
             Let&apos;s find your
@@ -346,7 +346,7 @@ export default function ServicesPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-10 py-5 rounded-full hover:bg-gray-900 transition-colors duration-200"
+            className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg px-10 py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200"
           >
             Book a Free Audit <ArrowUpRight size={18} />
           </Link>

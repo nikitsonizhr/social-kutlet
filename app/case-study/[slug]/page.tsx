@@ -103,7 +103,7 @@ export default function CaseStudyDetailPage() {
 
           {/* Badges */}
           <div className="flex items-center gap-3 mb-6 flex-wrap">
-            <span className="bg-[#E8231A]/10 text-[#E8231A] text-xs font-semibold px-3 py-1 rounded-full border border-[#E8231A]/15">
+            <span className="bg-[#E8231A]/10 text-[#E8231A] text-xs font-extrabold px-3 py-1 rounded-full border border-[#E8231A]/15">
               {study.tag}
             </span>
             <span className="text-gray-300 text-xs">{study.category}</span>
@@ -112,11 +112,11 @@ export default function CaseStudyDetailPage() {
           </div>
 
           {/* Client name */}
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">{study.client}</p>
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">{study.client}</p>
 
           {/* Headline */}
           <h1
-            className="text-5xl md:text-7xl font-bold text-gray-900 leading-[0.95] tracking-tight mb-6 max-w-5xl"
+            className="text-5xl md:text-7xl font-extrabold text-gray-900 leading-[0.95] tracking-tight mb-6 max-w-5xl"
             style={{ fontFamily: 'Poppins' }}
           >
             {study.headline}
@@ -128,7 +128,7 @@ export default function CaseStudyDetailPage() {
             {study.heroMetrics.map((m) => (
               <div key={m.label} className="bg-white px-6 py-5 text-center">
                 <div
-                  className="text-3xl md:text-4xl font-bold text-[#E8231A] mb-1"
+                  className="text-3xl md:text-4xl font-extrabold text-[#E8231A] mb-1"
                   style={{ fontFamily: 'Poppins' }}
                 >
                   {m.value}
@@ -164,7 +164,7 @@ export default function CaseStudyDetailPage() {
 
               {/* Challenge */}
               <div>
-                <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-4">The Challenge</p>
+                <p className="text-[#E8231A] text-xs font-extrabold uppercase tracking-widest mb-4">The Challenge</p>
                 <p className="text-gray-600 text-base leading-relaxed mb-6">{study.challenge.intro}</p>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {study.challenge.points.map((point, i) => (
@@ -190,13 +190,13 @@ export default function CaseStudyDetailPage() {
 
               {/* Approach */}
               <div>
-                <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-4">Our Approach</p>
+                <p className="text-[#E8231A] text-xs font-extrabold uppercase tracking-widest mb-4">Our Approach</p>
                 <p className="text-gray-600 text-base leading-relaxed mb-8">{study.approach.intro}</p>
                 <div className="space-y-4">
                   {study.approach.steps.map((step, i) => (
                     <div key={i} className="flex items-start gap-4">
                       <div className="w-8 h-8 bg-[#E8231A] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-white text-xs font-bold">{i + 1}</span>
+                        <span className="text-white text-xs font-extrabold">{i + 1}</span>
                       </div>
                       <p className="text-gray-600 text-base leading-relaxed pt-1">{step}</p>
                     </div>
@@ -215,7 +215,7 @@ export default function CaseStudyDetailPage() {
 
               {/* Creative Framework */}
               <div>
-                <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-4">Creative Framework</p>
+                <p className="text-[#E8231A] text-xs font-extrabold uppercase tracking-widest mb-4">Creative Framework</p>
                 <p className="text-gray-600 text-base leading-relaxed mb-6">{study.creativeFramework.intro}</p>
                 <ul className="space-y-3">
                   {study.creativeFramework.points.map((point, i) => (
@@ -235,12 +235,12 @@ export default function CaseStudyDetailPage() {
               {/* At a Glance card */}
               <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
                 <div className="bg-[#0A0A0A] px-6 py-4">
-                  <p className="text-white text-xs font-semibold uppercase tracking-widest">At a Glance</p>
+                  <p className="text-white text-xs font-extrabold uppercase tracking-widest">At a Glance</p>
                 </div>
                 <div className="p-5 space-y-1">
                   <div className="pb-4 mb-4 border-b border-gray-100">
                     <p className="text-gray-400 text-[10px] uppercase tracking-widest mb-1">Client</p>
-                    <p className="text-gray-900 font-semibold text-sm" style={{ fontFamily: 'Poppins' }}>{study.client}</p>
+                    <p className="text-gray-900 font-extrabold text-sm" style={{ fontFamily: 'Poppins' }}>{study.client}</p>
                   </div>
                   <div className="pb-4 mb-4 border-b border-gray-100">
                     <p className="text-gray-400 text-[10px] uppercase tracking-widest mb-1">Industry</p>
@@ -256,7 +256,7 @@ export default function CaseStudyDetailPage() {
                       {study.results.metrics.slice(0, 4).map((m) => (
                         <div key={m.label} className="flex items-center justify-between">
                           <span className="text-gray-500 text-xs">{m.label}</span>
-                          <span className="text-[#E8231A] font-bold text-sm" style={{ fontFamily: 'Poppins' }}>{m.value}</span>
+                          <span className="text-[#E8231A] font-extrabold text-sm" style={{ fontFamily: 'Poppins' }}>{m.value}</span>
                         </div>
                       ))}
                     </div>
@@ -266,13 +266,13 @@ export default function CaseStudyDetailPage() {
 
               {/* CTA card */}
               <div className="bg-[#E8231A] rounded-2xl p-6 text-white">
-                <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-2">Want similar results?</p>
-                <p className="text-white font-bold text-base mb-4" style={{ fontFamily: 'Poppins' }}>
+                <p className="text-white/70 text-xs font-extrabold uppercase tracking-widest mb-2">Want similar results?</p>
+                <p className="text-white font-extrabold text-base mb-4" style={{ fontFamily: 'Poppins' }}>
                   Let&apos;s build your growth story.
                 </p>
                 <Link
                   href="/contact"
-                  className="flex items-center justify-between bg-white text-[#E8231A] font-semibold text-sm px-5 py-3 rounded-full hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between bg-white text-[#E8231A] font-extrabold text-sm px-5 py-3 rounded-full hover:bg-gray-50 transition-colors"
                 >
                   Book a Strategy Call <ArrowUpRight size={14} />
                 </Link>
@@ -291,9 +291,9 @@ export default function CaseStudyDetailPage() {
               results.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-4">Results</p>
+            <p className="text-[#E8231A] text-xs font-extrabold uppercase tracking-widest mb-4">Results</p>
             <h2
-              className="text-4xl md:text-5xl font-bold text-white mb-12 max-w-2xl leading-tight"
+              className="text-4xl md:text-5xl font-extrabold text-white mb-12 max-w-2xl leading-tight"
               style={{ fontFamily: 'Poppins' }}
             >
               The numbers that
@@ -305,7 +305,7 @@ export default function CaseStudyDetailPage() {
               {study.results.metrics.map((m) => (
                 <div key={m.label} className="bg-[#0A0A0A] px-6 py-8 text-center">
                   <div
-                    className="text-3xl md:text-4xl font-bold text-[#E8231A] mb-2"
+                    className="text-3xl md:text-4xl font-extrabold text-[#E8231A] mb-2"
                     style={{ fontFamily: 'Poppins' }}
                   >
                     {m.value}
@@ -319,7 +319,7 @@ export default function CaseStudyDetailPage() {
               {study.results.highlights.map((highlight, i) => (
                 <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-5">
                   <div className="w-6 h-6 bg-[#E8231A] rounded-full flex items-center justify-center mb-3">
-                    <span className="text-white text-xs font-bold">{i + 1}</span>
+                    <span className="text-white text-xs font-extrabold">{i + 1}</span>
                   </div>
                   <p className="text-white/70 text-sm leading-relaxed">{highlight}</p>
                 </div>
@@ -337,7 +337,7 @@ export default function CaseStudyDetailPage() {
               takeaway.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-8 text-center">Key Takeaway</p>
+            <p className="text-[#E8231A] text-xs font-extrabold uppercase tracking-widest mb-8 text-center">Key Takeaway</p>
             <div className="relative">
               {/* Big quote mark */}
               <div
@@ -360,11 +360,11 @@ export default function CaseStudyDetailPage() {
       {/* ══════════════ BOTTOM CTA ══════════════ */}
       <section className="py-20 px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">
             Be our next success story
           </p>
           <h2
-            className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
+            className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6"
             style={{ fontFamily: 'Poppins' }}
           >
             Your results could
@@ -377,7 +377,7 @@ export default function CaseStudyDetailPage() {
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-10 py-5 rounded-full hover:bg-gray-900 transition-colors duration-200"
+              className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg px-10 py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200"
             >
               Start a Conversation <ArrowUpRight size={18} />
             </Link>

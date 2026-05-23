@@ -4,9 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  ArrowUpRight, TrendingUp, Target, Palette,
+  ArrowUpRight, Globe, Megaphone, Sparkles, Target,
   CheckCircle2, AlertCircle, BarChart2, Repeat2,
-  ShieldOff, Zap, Map, TrendingDown, Users,
+  ShieldOff, Zap, Map, TrendingDown,
 } from 'lucide-react';
 
 /* ── intersection-observer hook ── */
@@ -96,22 +96,22 @@ function HeroCarousel() {
                   )
                 }
                 <div className="absolute top-4 left-4">
-                  <span className="bg-white/85 backdrop-blur-sm text-[#E8231A] text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full border border-[#E8231A]/20 shadow-sm">
+                  <span className="bg-white/85 backdrop-blur-sm text-[#E8231A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full border border-[#E8231A]/20 shadow-sm">
                     {slide.category}
                   </span>
                 </div>
               </div>
 
               <div className="px-6 pt-5 pb-6">
-                <p className="text-gray-400 text-[11px] font-semibold uppercase tracking-widest mb-2">{slide.client}</p>
+                <p className="text-gray-400 text-[11px] font-extrabold uppercase tracking-widest mb-2">{slide.client}</p>
                 <div className="flex items-baseline gap-2 mb-5">
-                  <span className="text-[42px] font-bold leading-none text-gray-900" style={{ fontFamily: 'Poppins' }}>{slide.headline}</span>
+                  <span className="text-[42px] font-extrabold leading-none text-gray-900" style={{ fontFamily: 'Poppins' }}>{slide.headline}</span>
                   <span className="text-gray-400 text-sm">{slide.sub}</span>
                 </div>
                 <div className="flex gap-2.5">
                   {slide.metrics.map((m) => (
                     <div key={m.label} className="flex-1 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3">
-                      <p className="text-[#E8231A] font-bold text-base leading-none mb-1.5" style={{ fontFamily: 'Poppins' }}>{m.value}</p>
+                      <p className="text-[#E8231A] font-extrabold text-base leading-none mb-1.5" style={{ fontFamily: 'Poppins' }}>{m.value}</p>
                       <p className="text-gray-400 text-[10px] leading-tight">{m.label}</p>
                     </div>
                   ))}
@@ -138,30 +138,122 @@ function HeroCarousel() {
   );
 }
 
-/* ── USP Marquee ── */
-const usps = [
-  'Trusted by 50+ Active Brands',
-  'Data-Driven',
-  'Creative-First. Performance-Driven. Revenue-Obsessed.',
-  'Full-Funnel Growth Engineering',
-  'Focus on Real Business Outcomes',
-  '15+ Years of Brand Building Experience',
-  'Building Sustainable Growth Frames',
+/* ── Brand Strip ── */
+const brandClients = [
+  { name: 'Alpino',                 logo: '/logos/alpino.webp' },
+  { name: 'ASG Eye',                logo: '/logos/asgeye.jpeg' },
+  { name: 'Baidyanath',             logo: '/logos/baidyanath.jpeg' },
+  { name: 'BJP',                    logo: '/logos/bjp.png' },
+  { name: 'Bloom',                  logo: '/logos/bloom.jpeg' },
+  { name: 'CaratLane',              logo: '/logos/Caratlane.jpeg' },
+  { name: 'Carbamide Forte',        logo: '/logos/Carbamide_Forte.webp' },
+  { name: 'Carlinton',              logo: '/logos/carlinton.webp' },
+  { name: 'Eat Better',             logo: '/logos/eat_better.jpeg' },
+  { name: 'Emori',                  logo: '/logos/emori.webp' },
+  { name: 'Enrico',                 logo: '/logos/enrico.png' },
+  { name: 'Femella',                logo: '/logos/Femella.webp' },
+  { name: 'Frizty Retail',          logo: '/logos/friztyretail.jpeg' },
+  { name: 'Ghar Mandi',             logo: '/logos/ghar_mandi.jpeg' },
+  { name: 'Ghar Mandir',            logo: '/logos/gharmandir.png' },
+  { name: 'Gir Organi',             logo: '/logos/girorgani.webp' },
+  { name: 'Glowtime',               logo: '/logos/glowtime.webp' },
+  { name: 'Good Day',               logo: '/logos/goodday.png' },
+  { name: 'Headway',                logo: '/logos/headway.png' },
+  { name: 'Himalaya',               logo: '/logos/himalaya.webp' },
+  { name: 'India IVF Fertility',    logo: '/logos/india_ivf_fertility.jpeg' },
+  { name: 'JBL',                    logo: '/logos/JBL.webp' },
+  { name: 'KOKO',                   logo: '/logos/KOKO.jpg' },
+  { name: 'Lakmé',                  logo: '/logos/Lakm%C3%A9.jpg' },
+  { name: 'LMJ',                    logo: '/logos/lmj.png' },
+  { name: "L'Oréal",                logo: '/logos/loreal.png' },
+  { name: 'Manyavar',               logo: '/logos/Manyavar.jpeg' },
+  { name: 'Namhya',                 logo: '/logos/Namhya.webp' },
+  { name: 'Neemans',                logo: '/logos/neemans.jpeg' },
+  { name: 'Netflix',                logo: '/logos/netflix.png' },
+  { name: 'Neuberg Diagnostics',    logo: '/logos/Neuberg%2B_Diagnostics_logo.png' },
+  { name: 'Nova IVF',               logo: '/logos/Novaivf.png' },
+  { name: 'Orimii',                 logo: '/logos/orimii.png' },
+  { name: 'Origin',                 logo: '/logos/origin.jpeg' },
+  { name: 'Plantbro Life Sciences', logo: '/logos/plantbro_life_sciences_logo.jpeg' },
+  { name: 'Rabitat',                logo: '/logos/rabitat.png' },
+  { name: 'Reequil',                logo: '/logos/Reequil.png' },
+  { name: 'Shaadi.com',             logo: '/logos/shaadi_logo.png' },
+  { name: 'Skullcandy',             logo: '/logos/skullcandy-logo.png' },
+  { name: 'Soam',                   logo: '/logos/soam.jpeg' },
+  { name: 'Sugar Fit',              logo: '/logos/Sugar-fit.webp' },
+  { name: 'Sujatra',                logo: '/logos/sujatra.jpeg' },
+  { name: 'Swiggy',                 logo: '/logos/swiggy.webp' },
+  { name: 'Truly Desi',             logo: '/logos/truly_desi_logo%20(1).jpeg' },
+  { name: 'Ugaoo',                  logo: '/logos/ugaoo.png' },
+  { name: 'Vaadi',                  logo: '/logos/vaadi-logo-transparent-back-1000x1000.webp' },
 ];
 
-function Marquee() {
+// Rotate the array by `offset` so each row starts at a different brand
+function rotate<T>(arr: T[], offset: number): T[] {
+  return [...arr.slice(offset), ...arr.slice(0, offset)];
+}
+
+function BrandRow({ brands, direction, duration }: {
+  brands: typeof brandClients;
+  direction: 'left' | 'right';
+  duration: number;
+}) {
+  // Triplicate for a seamless infinite loop
+  const track = [...brands, ...brands, ...brands];
+  const anim = direction === 'left' ? 'brandLeft' : 'brandRight';
   return (
-    <div className="overflow-hidden bg-[#0A0A0A] py-4">
-      <div className="flex gap-0 whitespace-nowrap" style={{ animation: 'marquee 28s linear infinite' }}>
-        {[...usps, ...usps].map((usp, i) => (
-          <span key={i} className="inline-flex items-center gap-3 px-8 text-sm font-medium text-white/70">
-            <span className="w-1.5 h-1.5 bg-[#E8231A] rounded-full shrink-0" />
-            {usp}
-          </span>
+    <div className="relative py-3">
+      <div
+        className="flex items-center gap-12 whitespace-nowrap"
+        style={{ animation: `${anim} ${duration}s linear infinite`, willChange: 'transform' }}
+      >
+        {track.map((brand, i) => (
+          // Fixed slot: every logo lives in the same 120 × 44 px box
+          <div
+            key={i}
+            className="inline-flex items-center justify-center shrink-0 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-300"
+            style={{ width: 160, height: 60 }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={brand.logo}
+              alt={brand.name}
+              loading="lazy"
+              draggable={false}
+              className="w-full h-full object-contain select-none"
+            />
+          </div>
         ))}
       </div>
-      <style>{`@keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
     </div>
+  );
+}
+
+function BrandStrip() {
+  const row1 = rotate(brandClients, 0);    // left  → starts at brand 0
+  const row2 = rotate(brandClients, 15);   // right → starts at brand 15
+  const row3 = rotate(brandClients, 30);   // left  → starts at brand 30
+  return (
+    <section className="py-10 bg-[#F9F9F9] border-y border-gray-200 overflow-hidden">
+      <p className="text-center text-[10px] font-extrabold uppercase tracking-[0.25em] text-gray-400 mb-7">
+        Trusted by 100+ brands across India
+      </p>
+
+      <div className="relative space-y-1">
+        <BrandRow brands={row1} direction="left"  duration={60} />
+        <BrandRow brands={row2} direction="right" duration={70} />
+        <BrandRow brands={row3} direction="left"  duration={52} />
+
+        {/* Edge fades */}
+        <div className="pointer-events-none absolute inset-y-0 left-0  w-32 bg-linear-to-r from-[#F9F9F9] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-linear-to-l from-[#F9F9F9] to-transparent" />
+      </div>
+
+      <style>{`
+        @keyframes brandLeft  { 0% { transform: translateX(0);        } 100% { transform: translateX(-33.333%); } }
+        @keyframes brandRight { 0% { transform: translateX(-33.333%); } 100% { transform: translateX(0);        } }
+      `}</style>
+    </section>
   );
 }
 
@@ -173,81 +265,67 @@ const stats = [
 ];
 
 const problems = [
-  { icon: Target,      text: 'Establishing Product Market Fit (PMF)' },
-  { icon: TrendingDown, text: 'Terrible ROAS with no improvement in sight' },
-  { icon: BarChart2,   text: 'No scalability — revenue constant month on month' },
-  { icon: AlertCircle, text: 'Not reaching breakeven on marketing or product' },
-  { icon: ShieldOff,   text: 'Lack of accountability from past agencies' },
-  { icon: Zap,         text: 'Ad creative fatigue hurting performance' },
-  { icon: Map,         text: 'No structured digital GTM strategy for new launches' },
-  { icon: Repeat2,     text: 'Unable to drive demand or validate new offerings' },
+  { icon: Target,       text: 'Establishing Product Market Fit (PMF)' },
+  { icon: TrendingDown, text: 'Terrible ROAS' },
+  { icon: BarChart2,    text: 'No Scalability — Revenue/Orders being constant month on month' },
+  { icon: AlertCircle,  text: 'Not Reaching Breakeven on Marketing/Product, etc.' },
+  { icon: ShieldOff,    text: 'Lack of Accountability by past agencies' },
+  { icon: Zap,          text: 'Ad creative fatigue' },
+  { icon: Map,          text: 'Lack of a Structured Digital GTM Strategy for Launching New Products/Services' },
+  { icon: Repeat2,      text: 'Inability to Drive Demand & Validate New Offerings Through Digital Channels' },
 ];
 
 const whyUs = [
-  'Performance-driven ad campaigns & strategies',
-  'Platform-specific content & ad expertise',
+  'Performance driven ad campaigns and growth strategies',
+  'Platform specific content and ad expertise',
   'Creative that grabs attention and converts',
-  'Data-backed decisions & continuous optimisation',
+  'Data driven decisions with continuous optimisation',
   'Consistent brand storytelling across platforms',
-  'End-to-end social media management',
-  'Transparent reporting & clear communication',
-  'Agile, trend-responsive execution',
-  'Growth-focused partnership mindset',
+  'End to end social media management',
+  'Transparent reporting and clear communication',
+  'Agile execution that moves with trends',
+  'A growth focused partnership, not just a vendor',
 ];
 
 const services = [
   {
-    icon: TrendingUp,
-    tag: '01',
+    icon: Globe,
     title: 'Organic Marketing & Traffic Growth',
-    desc: 'Build compound growth engines that work 24/7 — SEO, CRO, social, and web that attract, convert, and retain.',
     items: ['CRO Services', 'Website Development', 'Social Media Marketing', 'SEO Services'],
     href: '/services#organic',
   },
   {
-    icon: Target,
-    tag: '02',
+    icon: Megaphone,
     title: 'Demand Generation',
-    desc: 'Precision full-funnel performance campaigns across every platform — from awareness to acquisition.',
     items: ['Retention Marketing', 'Programmatic (DV360)', 'Google / Meta / Lead Gen', 'Influencer & Affiliate'],
     href: '/services#demand',
   },
   {
-    icon: Palette,
-    tag: '03',
+    icon: Sparkles,
     title: 'In-Depth Brand & Creative Strategy',
-    desc: 'Breakthrough creative and strategic thinking that builds brand equity while driving measurable outcomes.',
     items: ['Content Marketing', 'Content Creation', 'Creative Communication', 'Brand Strategy'],
     href: '/services#creative',
   },
 ];
 
 const industries = [
-  { label: 'D2C & E-commerce', sub: 'From launch to scale' },
-  { label: 'FMCG & Retail', sub: 'Brand + shelf presence' },
-  { label: 'Fintech & BFSI', sub: 'Regulated, performance-led' },
-  { label: 'SaaS & Tech', sub: 'Pipeline + product-led growth' },
-  { label: 'Real Estate', sub: 'Lead gen + brand trust' },
-  { label: 'Healthcare', sub: 'Compliant, patient-centric' },
+  'D2C & E-commerce',
+  'FMCG & Retail',
+  'Healthcare & Pharmacies',
+  'Fintech',
+  'Real Estate',
+  'Edutech',
+  'SaaS & Tech',
+  'Travel and Hospitality',
+  'Fashion & Lifestyle',
+  'Beauty & Skincare',
+  'Health & Wellness',
+  'Homecare & Kitchen',
+  'Food & Beverages',
+  'Personal Care & Hygiene',
+  "NGO's & Non-profits",
 ];
 
-const testimonials = [
-  {
-    quote: 'Social Kutlet is the first agency that explained our numbers in terms of business impact, not marketing metrics.',
-    role: 'Founder',
-    company: 'D2C Skincare Brand, Mumbai',
-  },
-  {
-    quote: 'They rebuilt our entire Meta funnel in 6 weeks. The ROAS improvement was immediate and held for 8 months.',
-    role: 'CMO',
-    company: 'Consumer Electronics Brand',
-  },
-  {
-    quote: "What sets them apart is that they push back when a strategy isn't right. Most agencies just execute. These guys think.",
-    role: 'Growth Lead',
-    company: 'Series A Fintech Startup',
-  },
-];
 
 const featuredCaseStudies = [
   {
@@ -289,7 +367,6 @@ export default function Home() {
   const [servicesRef, servicesInView]   = useInView(0.1);
   const [industriesRef, industriesInView] = useInView(0.1);
   const [caseRef, caseInView]           = useInView(0.1);
-  const [testimonialsRef, testimonialsInView] = useInView(0.1);
 
   return (
     <>
@@ -303,31 +380,26 @@ export default function Home() {
           className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-20 grid lg:grid-cols-2 gap-16 items-center transition-all duration-1000 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
         >
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#E8231A]/8 border border-[#E8231A]/15 text-[#E8231A] text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-7">
-              <span className="w-1.5 h-1.5 bg-[#E8231A] rounded-full animate-pulse" />
-              360° Growth Partners
-            </div>
-
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-[0.95] tracking-tight mb-6" style={{ fontFamily: 'Poppins' }}>
-              Your <span className="whitespace-nowrap">End-to-End</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight lg:leading-[0.95] tracking-tight mb-6" style={{ fontFamily: 'Poppins' }}>
+              Your Growth Partners
               <br />
-              Growth Partners
+              for{' '}
+              <span className="text-[#E8231A]">Scaling</span>
               <br />
-              <span className="text-[#E8231A]">for Scaling</span>
-              <br />
-              and Driving Results.
+              and{' '}
+              <span className="text-[#E8231A]">Driving</span>{' '}Results.
             </h1>
 
-            <p className="text-gray-500 text-lg max-w-xl leading-relaxed mb-10" style={{ fontFamily: 'Inter' }}>
+            <p className="text-gray-500 text-lg max-w-xl leading-relaxed mb-10" style={{ fontFamily: 'Poppins' }}>
               From performance marketing and organic growth to creative strategy and influencer — one partner, every channel, one outcome.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-start gap-4">
-              <Link href="/services" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base">
-                Our Services <ArrowUpRight size={18} />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-start gap-4">
+              <Link href="/services" className="inline-flex items-center justify-center gap-2 bg-[#E8231A] text-white font-black text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200" style={{ fontFamily: 'Poppins' }}>
+                Our Services <ArrowUpRight size={20} />
               </Link>
-              <Link href="/case-study" className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-8 py-4 rounded-full hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-base">
-                See How We&apos;ve Driven Results
+              <Link href="/case-study" className="inline-flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-5 rounded-full hover:bg-gray-900 hover:text-white transition-all duration-200" style={{ fontFamily: 'Poppins' }}>
+                View Success Stories <ArrowUpRight size={20} />
               </Link>
             </div>
           </div>
@@ -343,20 +415,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ MARQUEE ══════════════ */}
-      <Marquee />
+      {/* ══════════════ BRAND STRIP ══════════════ */}
+      <BrandStrip />
 
       {/* ══════════════ STATS ══════════════ */}
       <section className="border-y border-gray-200 bg-white" ref={statsRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-gray-200">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-200">
             {stats.map((stat, i) => (
               <div
                 key={stat.label}
-                className={`py-10 px-8 transition-all duration-700 ${statsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                className={`py-8 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${statsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Poppins' }}>
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-gray-900 mb-2" style={{ fontFamily: 'Poppins' }}>
                   {stat.display}
                 </div>
                 <p className="text-gray-500 text-sm font-medium">{stat.label}</p>
@@ -366,82 +438,119 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ WHY SOCIAL KUTLET ══════════════ */}
-      <section className="py-20 px-6 lg:px-8 bg-white" ref={defineRef}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div className={`transition-all duration-700 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Why Social Kutlet</p>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6" style={{ fontFamily: 'Poppins' }}>
-              Brand builders
-              <br />
-              at <span className="text-[#E8231A]">heart.</span>
+      {/* ══════════════ BRAND BUILDERS BY HEART ══════════════ */}
+      <section className="py-24 px-6 lg:px-8 bg-white" ref={defineRef}>
+        <div className="max-w-7xl mx-auto">
+
+          {/* Centred heading */}
+          <div className={`text-center mb-14 transition-all duration-700 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              Brand builders <span className="text-[#E8231A]">by heart.</span>
             </h2>
-            <div className="space-y-4 text-gray-600 leading-relaxed mb-8 text-base">
-              <p>
-                At Social Kutlet, we are brand builders at heart, designing creative-first, performance-led growth systems that deliver.
-              </p>
-              <p>
-                We partner with brands to grow digitally — combining performance marketing across Meta and Google, quick commerce expansion, and conversion-focused e-commerce experiences to drive scalable profitable revenue, stronger ROAS, amplify AOV and maintain long-term customer relationships.
-              </p>
-              <p>
-                We focus on turning strategy into results with precision, speed, and accountability.
-              </p>
-              <p className="font-semibold text-gray-800">
-                We don&apos;t see ourselves as just partners; we embed ourselves into your brand&apos;s journey, working as an extended team to create meaningful growth and shared success.
-              </p>
-            </div>
-            <Link href="/services" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200">
-              Dive into Our Services <ArrowUpRight size={18} />
-            </Link>
           </div>
 
-          <div className={`grid grid-cols-3 gap-3 transition-all duration-700 delay-200 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          {/* 9 boxes */}
+          <div className={`grid grid-cols-2 sm:grid-cols-3 gap-4 mb-14 transition-all duration-700 delay-150 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {[
-              { label: 'Creative-First',   sub: 'Performance-Driven' },
-              { label: 'Revenue-Obsessed', sub: 'ROI Focused' },
-              { label: 'Full-Funnel',      sub: 'Growth Engineering' },
-              { label: 'Data-Driven',      sub: 'Insight-Backed' },
-              { label: 'Brand-Native',     sub: 'Extended Team' },
+              { label: 'Creative First',   sub: 'Performance Led' },
+              { label: 'Revenue Focused',  sub: 'ROI Driven' },
+              { label: 'Full Funnel',      sub: 'Growth Engineering' },
+              { label: 'Data Backed',      sub: 'Insight Led' },
+              { label: 'Brand Native',     sub: 'Extended Team' },
               { label: '360° Coverage',    sub: 'One Roof' },
               { label: 'Transparent',      sub: 'Clear Reporting' },
-              { label: 'Agile',            sub: 'Trend-Responsive' },
-              { label: 'Growth-Focused',   sub: 'Partnership Mindset' },
+              { label: 'Agile',            sub: 'Trend Aware' },
+              { label: 'Growth Focused',   sub: 'Partnership Mindset' },
             ].map((card, i) => (
-              <div key={i} className="bg-gray-50 border border-gray-200 rounded-2xl p-5 hover:border-[#E8231A]/25 hover:bg-white hover:shadow-lg hover:shadow-black/5 transition-all duration-200 flex flex-col gap-1">
-                <div className="w-2 h-2 bg-[#E8231A] rounded-full mb-2" />
-                <p className="text-gray-900 font-bold text-sm leading-snug" style={{ fontFamily: 'Poppins' }}>{card.label}</p>
-                <p className="text-gray-500 text-xs">{card.sub}</p>
+              <div
+                key={i}
+                className="bg-gray-50 border border-gray-200 rounded-2xl p-6 lg:p-8 hover:border-[#E8231A]/25 hover:bg-white hover:shadow-xl hover:shadow-black/5 transition-all duration-200 flex flex-col gap-2"
+              >
+                <div className="w-3 h-3 bg-[#E8231A] rounded-full mb-2" />
+                <p className="text-gray-900 font-black text-xl leading-snug" style={{ fontFamily: 'Poppins' }}>{card.label}</p>
+                <p className="text-gray-500 text-sm font-semibold">{card.sub}</p>
               </div>
             ))}
           </div>
+
+          {/* Centred CTA */}
+          <div className={`text-center transition-all duration-700 delay-300 ${defineInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg sm:text-xl px-8 sm:px-14 py-5 sm:py-6 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              Dive into Our Services <ArrowUpRight size={20} />
+            </Link>
+          </div>
+
         </div>
       </section>
 
       {/* ══════════════ TRUSTED PARTNERS ══════════════ */}
       <section className="py-16 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={partnersRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`text-center mb-10 transition-all duration-700 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Our Trusted Partners</p>
-            <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
+          <div className={`text-center mb-12 transition-all duration-700 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">Our Trusted Partners</p>
+            <h2 className="text-3xl font-extrabold text-gray-900" style={{ fontFamily: 'Poppins' }}>
               Backed by the world&apos;s leading platforms.
             </h2>
           </div>
 
-          <div className={`flex flex-col sm:flex-row items-center justify-center gap-6 transition-all duration-700 delay-200 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          {/* Platform partners — with logos */}
+          <div className={`flex flex-wrap items-center justify-center gap-4 mb-5 transition-all duration-700 delay-100 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {[
-              { src: '/logos/google-logo.webp', alt: 'Google Premier Partner', tag: 'Premier Partner' },
-              { src: '/logos/meta-logo.png',    alt: 'Meta Business Partner',  tag: 'Business Partner' },
-              { src: '/logos/shopify-logo.png', alt: 'Shopify Partner',        tag: 'Partner' },
-            ].map(({ src, alt, tag }) => (
+              { src: '/logos/google-logo.webp', alt: 'Google Premier Partner', tag: 'Premier Partner',    useImg: false },
+              { src: '/logos/meta-logo.png',    alt: 'Meta Business Partner',  tag: 'Business Partner',  useImg: false },
+              { src: '/logos/shopify-logo.png', alt: 'Shopify Partner',        tag: 'Partner',           useImg: false },
+              {
+                src: 'https://acadia.io/wp-content/uploads/2024/01/Advanced-partner-badge.png',
+                alt: 'Amazon Ads Advanced Partner',
+                tag: 'Advanced Partner',
+                useImg: true,
+              },
+            ].map(({ src, alt, tag, useImg }) => (
               <div
                 key={alt}
-                className="bg-white border border-gray-200 rounded-2xl px-8 py-6 flex flex-col items-center justify-center gap-4 shadow-sm hover:shadow-md hover:border-gray-300 transition-all w-[220px]"
+                className="bg-white border border-gray-200 rounded-2xl px-8 py-6 flex flex-col items-center justify-center gap-4 shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
+                style={{ minWidth: 180 }}
               >
                 <div className="w-[120px] h-[36px] flex items-center justify-center">
-                  <Image src={src} alt={alt} width={120} height={36} className="object-contain w-full h-full" />
+                  {useImg ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={src} alt={alt} width={120} height={36} className="object-contain w-full h-full" />
+                  ) : (
+                    <Image src={src} alt={alt} width={120} height={36} className="object-contain w-full h-full" />
+                  )}
                 </div>
-                <span className="text-[#E8231A] text-[10px] font-semibold uppercase tracking-widest border border-[#E8231A]/20 bg-[#E8231A]/6 px-3 py-1 rounded-full">
+                <span className="text-[#E8231A] text-[10px] font-extrabold uppercase tracking-widest border border-[#E8231A]/20 bg-[#E8231A]/6 px-3 py-1 rounded-full">
                   {tag}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Technology & channel partners — text-based */}
+          <div className={`flex flex-wrap items-center justify-center gap-3 transition-all duration-700 delay-200 ${partnersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            {[
+              'Gokwik',
+              'Fastrr by Shiprocket',
+              'Webengage',
+              'Nitro Commerce',
+              'Snapchat Ads',
+              'LinkedIn Ads',
+            ].map((name) => (
+              <div
+                key={name}
+                className="bg-white border border-gray-200 rounded-xl px-6 py-4 flex items-center gap-3 shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
+              >
+                <div className="w-2 h-2 bg-[#E8231A] rounded-full shrink-0" />
+                <span className="text-gray-800 font-extrabold text-sm" style={{ fontFamily: 'Poppins' }}>{name}</span>
+                <span className="text-[#E8231A] text-[10px] font-extrabold uppercase tracking-wider border border-[#E8231A]/20 bg-[#E8231A]/6 px-2 py-0.5 rounded-full">
+                  Partner
                 </span>
               </div>
             ))}
@@ -450,20 +559,21 @@ export default function Home() {
       </section>
 
       {/* ══════════════ PROBLEMS WE SOLVE ══════════════ */}
-      <section className="py-20 px-6 lg:px-8 bg-white" ref={problemsRef}>
+      <section className="py-24 px-6 lg:px-8 bg-white" ref={problemsRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`mb-12 max-w-2xl transition-all duration-700 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Sound Familiar?</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight" style={{ fontFamily: 'Poppins' }}>
-              If your brand is facing
-              <br />
-              these challenges—
-              <br />
-              <span className="text-[#E8231A]">you&apos;re in the right place.</span>
+
+          {/* Centred heading — one line */}
+          <div className={`text-center mb-14 transition-all duration-700 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              If your brand is facing these challenges
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Problem cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
             {problems.map((problem, i) => (
               <div
                 key={i}
@@ -473,36 +583,50 @@ export default function Home() {
                 <div className="w-10 h-10 bg-[#E8231A]/8 rounded-xl flex items-center justify-center mb-4">
                   <problem.icon size={18} className="text-[#E8231A]" />
                 </div>
-                <p className="text-gray-700 text-sm leading-relaxed font-medium">{problem.text}</p>
+                <p className="text-gray-800 text-base leading-relaxed font-bold">{problem.text}</p>
               </div>
             ))}
           </div>
 
-          <div className={`mt-10 text-center transition-all duration-700 delay-300 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-900 transition-colors duration-200">
-              Let&apos;s Fix This <ArrowUpRight size={18} />
+          {/* "You're in the right place" + CTA — centred */}
+          <div className={`text-center space-y-8 transition-all duration-700 delay-300 ${problemsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h3
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#E8231A] leading-tight"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              You&apos;re in the right place.
+            </h3>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg sm:text-xl px-8 sm:px-14 py-5 sm:py-6 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              Let&apos;s Fix This <ArrowUpRight size={20} />
             </Link>
           </div>
+
         </div>
       </section>
 
-      {/* ══════════════ WHY CHOOSE US ══════════════ */}
+      {/* ══════════════ OUR EXPERTISE ══════════════ */}
       <section className="py-20 px-6 lg:px-8 bg-gray-50 border-y border-gray-200" ref={whyRef}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className={`transition-all duration-700 ${whyInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Why Choose Us</p>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Poppins' }}>
-              The agency
-              <br />
-              that does it all—
-              <br />
-              <span className="text-[#E8231A]">right.</span>
+            <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">Why Choose Us</p>
+            <h2
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              Our <span className="text-[#E8231A]">Expertise.</span>
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-8 text-base">
+            <p className="text-gray-700 leading-relaxed mb-8 text-base font-semibold">
               Most agencies specialise in one slice. We connect every slice — organic, paid,
               and creative — into a single cohesive growth machine for your brand.
             </p>
-            <Link href="/strategy" className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-700 font-medium px-6 py-3 rounded-full hover:border-[#E8231A]/30 hover:bg-white transition-all text-sm">
+            <Link
+              href="/strategy"
+              className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-700 font-bold px-6 py-3 rounded-full hover:border-[#E8231A]/30 hover:bg-white transition-all text-sm"
+            >
               See Our Strategy <ArrowUpRight size={14} />
             </Link>
           </div>
@@ -510,8 +634,8 @@ export default function Home() {
           <div className={`grid gap-3 transition-all duration-700 delay-200 ${whyInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             {whyUs.map((item, i) => (
               <div key={i} className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-[#E8231A]/20 hover:shadow-sm transition-all">
-                <CheckCircle2 size={18} className="text-[#E8231A] mt-0.5 shrink-0" />
-                <p className="text-gray-700 text-sm leading-relaxed font-medium">{item}</p>
+                <CheckCircle2 size={20} className="text-[#E8231A] mt-0.5 shrink-0" />
+                <p className="text-gray-800 text-base leading-relaxed font-bold">{item}</p>
               </div>
             ))}
           </div>
@@ -521,47 +645,48 @@ export default function Home() {
       {/* ══════════════ SERVICES ══════════════ */}
       <section className="py-20 px-6 lg:px-8 bg-white" ref={servicesRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 transition-all duration-700 ${servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div>
-              <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">What We Do</p>
-              <h2 className="text-5xl md:text-6xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
-                Three pillars.
-                <br />
-                One engine.
-              </h2>
-              <p className="text-gray-500 mt-3 text-base font-medium">Every pillar works alone, together they compound.</p>
-            </div>
-            <Link href="/services" className="self-start md:self-auto inline-flex items-center gap-2 text-gray-400 hover:text-gray-900 text-sm font-medium transition-colors">
-              Learn More <ArrowUpRight size={14} />
-            </Link>
+
+          {/* Centred heading */}
+          <div className={`text-center mb-14 transition-all duration-700 ${servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">What We Do</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900" style={{ fontFamily: 'Poppins' }}>
+              Three pillars.
+              <br />
+              One engine.
+            </h2>
+            <p className="text-gray-500 mt-3 text-base font-medium">Every pillar works alone, together they compound.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
             {services.map((svc, i) => (
               <div
                 key={svc.title}
-                className={`group bg-gray-50 border border-gray-200 rounded-2xl p-8 hover:border-[#E8231A]/25 hover:bg-white hover:shadow-xl hover:shadow-black/5 transition-all duration-500 ${servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                className={`group bg-gray-50 border border-gray-200 rounded-2xl p-8 flex flex-col hover:border-[#E8231A]/25 hover:bg-white hover:shadow-xl hover:shadow-black/5 transition-all duration-500 ${servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                 style={{ transitionDelay: `${i * 150}ms` }}
               >
-                <div className="flex items-start justify-between mb-8">
-                  <div className="w-12 h-12 bg-[#E8231A]/8 rounded-xl flex items-center justify-center group-hover:bg-[#E8231A]/15 transition-colors">
-                    <svc.icon size={22} className="text-[#E8231A]" />
-                  </div>
-                  <span className="text-gray-200 text-4xl font-bold" style={{ fontFamily: 'Poppins' }}>{svc.tag}</span>
+                {/* Icon */}
+                <div className="w-14 h-14 bg-[#E8231A]/8 rounded-xl flex items-center justify-center group-hover:bg-[#E8231A]/15 transition-colors mb-7">
+                  <svc.icon size={26} className="text-[#E8231A]" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Poppins' }}>{svc.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-6">{svc.desc}</p>
-                <ul className="space-y-2 mb-8">
+
+                {/* Title */}
+                <h3 className="text-2xl font-extrabold text-gray-900 mb-5" style={{ fontFamily: 'Poppins' }}>{svc.title}</h3>
+
+                {/* Service items */}
+                <ul className="space-y-2.5 mb-8 flex-1">
                   {svc.items.map((item) => (
-                    <li key={item}>
-                      <Link href={svc.href} className="flex items-center gap-2 text-gray-500 text-sm hover:text-[#E8231A] transition-colors">
-                        <span className="w-1 h-1 bg-gray-400 rounded-full shrink-0" />
-                        {item}
-                      </Link>
+                    <li key={item} className="flex items-center gap-2 text-gray-600 text-sm font-semibold">
+                      <span className="w-1.5 h-1.5 bg-[#E8231A] rounded-full shrink-0" />
+                      {item}
                     </li>
                   ))}
                 </ul>
-                <Link href="/services" className="inline-flex items-center gap-1.5 text-[#E8231A] text-sm font-medium group-hover:gap-2.5 transition-all">
+
+                {/* Prominent CTA */}
+                <Link
+                  href="/services"
+                  className="inline-flex items-center justify-center gap-2 bg-[#E8231A] text-white font-black text-sm px-6 py-3 rounded-full hover:bg-gray-900 transition-colors duration-200"
+                >
                   Learn More <ArrowUpRight size={14} />
                 </Link>
               </div>
@@ -573,29 +698,30 @@ export default function Home() {
       {/* ══════════════ INDUSTRIES WE SERVE — dark ══════════════ */}
       <section className="py-20 px-6 lg:px-8 bg-[#0A0A0A]" ref={industriesRef}>
         <div className="max-w-7xl mx-auto">
-          <div className={`mb-12 transition-all duration-700 ${industriesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-4">Industries We Serve</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'Poppins' }}>
-              Deep expertise across the categories that matter.
+
+          {/* Centred, bold heading */}
+          <div className={`text-center mb-12 transition-all duration-700 ${industriesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2
+              className="text-4xl md:text-5xl lg:text-6xl font-black text-white"
+              style={{ fontFamily: 'Poppins' }}
+            >
+              Industries We Serve
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {industries.map((ind, i) => (
               <div
-                key={ind.label}
-                className={`group bg-white/5 border border-white/10 rounded-2xl p-6 flex items-start gap-4 hover:border-[#E8231A]/40 hover:bg-white/8 transition-all duration-300 ${industriesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
+                key={ind}
+                className={`group bg-white/5 border border-white/10 rounded-2xl p-5 flex items-start gap-3 hover:border-[#E8231A]/40 hover:bg-white/8 transition-all duration-300 ${industriesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: `${i * 50}ms` }}
               >
-                <div className="w-10 h-10 bg-[#E8231A]/15 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-[#E8231A]/25 transition-colors">
-                  <div className="w-2 h-2 bg-[#E8231A] rounded-full" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-sm mb-1" style={{ fontFamily: 'Poppins' }}>{ind.label}</p>
-                  <p className="text-white/50 text-xs">{ind.sub}</p>
-                </div>
+                <div className="w-2 h-2 bg-[#E8231A] rounded-full mt-1.5 shrink-0" />
+                <p className="text-white font-bold text-sm leading-snug" style={{ fontFamily: 'Poppins' }}>{ind}</p>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
@@ -604,8 +730,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className={`flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 transition-all duration-700 ${caseInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div>
-              <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-4">Case Studies</p>
-              <h2 className="text-5xl md:text-6xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
+              <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-4">Case Studies</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 Strategies that scale.
                 <br />
                 <span className="text-[#E8231A]">Results that last.</span>
@@ -629,13 +755,13 @@ export default function Home() {
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
-                  <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-2">{study.client}</p>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight" style={{ fontFamily: 'Poppins' }}>{study.title}</h3>
+                  <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-2">{study.client}</p>
+                  <h3 className="text-lg font-extrabold text-gray-900 mb-3 leading-tight" style={{ fontFamily: 'Poppins' }}>{study.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed mb-5 flex-1">{study.desc}</p>
                   <div className="grid grid-cols-3 gap-2 mb-5">
                     {study.metrics.map((m) => (
                       <div key={m.label} className="bg-gray-50 rounded-lg p-2.5 text-center border border-gray-100">
-                        <div className="text-[#E8231A] font-bold text-sm mb-0.5" style={{ fontFamily: 'Poppins' }}>{m.value}</div>
+                        <div className="text-[#E8231A] font-extrabold text-sm mb-0.5" style={{ fontFamily: 'Poppins' }}>{m.value}</div>
                         <div className="text-gray-400 text-[10px] leading-tight">{m.label}</div>
                       </div>
                     ))}
@@ -650,44 +776,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ TESTIMONIALS — dark ══════════════ */}
-      <section className="py-20 px-6 lg:px-8 bg-[#0A0A0A]" ref={testimonialsRef}>
-        <div className="max-w-7xl mx-auto">
-          <div className={`mb-12 transition-all duration-700 ${testimonialsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-4">What Our Clients Say</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'Poppins' }}>
-              Heard directly from the brands we work with.
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            {testimonials.map((t, i) => (
-              <div
-                key={i}
-                className={`group bg-white/5 border border-white/10 rounded-2xl p-7 flex flex-col hover:border-[#E8231A]/30 hover:bg-white/8 transition-all duration-300 ${testimonialsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                <span className="text-[#E8231A]/50 text-5xl font-serif leading-none mb-4">&ldquo;</span>
-                <p className="text-white/80 text-sm leading-relaxed flex-1 mb-6">{t.quote}</p>
-                <div className="flex items-center gap-3 border-t border-white/10 pt-5">
-                  <div className="w-8 h-8 rounded-full bg-[#E8231A]/20 flex items-center justify-center shrink-0">
-                    <span className="text-[#E8231A] text-xs font-bold">{t.role[0]}</span>
-                  </div>
-                  <div>
-                    <p className="text-white text-sm font-semibold">{t.role}</p>
-                    <p className="text-white/40 text-xs mt-0.5">{t.company}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ══════════════ BOTTOM CTA ══════════════ */}
+{/* ══════════════ BOTTOM CTA ══════════════ */}
       <section className="py-24 px-6 lg:px-8 bg-white border-t border-gray-200">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">Ready to Scale?</p>
-          <h2 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Poppins' }}>
+          <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-6">Ready to Scale?</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Poppins' }}>
             Let&apos;s build something
             <br />
             <span className="text-[#E8231A]">remarkable.</span>
@@ -696,7 +790,7 @@ export default function Home() {
             Let&apos;s talk about your goals and build the strategy that gets you there.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-semibold px-10 py-5 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#E8231A] text-white font-black text-lg px-10 py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200 text-base">
               Book a Call <ArrowUpRight size={18} />
             </Link>
             <Link href="/case-study" className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 font-medium px-10 py-5 rounded-full hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-base">

@@ -76,6 +76,8 @@ export default function ContactPage() {
   const [budget, setBudget] = useState('');
   const [hearFrom, setHearFrom] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -91,9 +93,35 @@ export default function ContactPage() {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          services: selectedServices,
+          budget,
+          hearFrom,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setSubmitError(data.error || 'Something went wrong. Please try again.');
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setSubmitError('Network error — please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -115,14 +143,14 @@ export default function ContactPage() {
 
         <div
           ref={hero.ref}
-          className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-40 pb-16 transition-all duration-1000 ${
+          className={`relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 md:pt-40 pb-16 transition-all duration-1000 ${
             hero.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}
         >
           <div className="max-w-3xl">
-            <p className="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-5">Get in Touch</p>
+            <p className="text-gray-400 text-xs font-extrabold uppercase tracking-widest mb-5">Get in Touch</p>
             <h1
-              className="text-5xl md:text-7xl font-bold text-gray-900 leading-[0.9] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[0.95] tracking-tight mb-6"
               style={{ fontFamily: 'Poppins' }}
             >
               Let&apos;s talk about
@@ -139,26 +167,29 @@ export default function ContactPage() {
 
       {/* ══════════════ CONTENT ══════════════ */}
       <section className="py-12 px-6 lg:px-8 border-t border-gray-200 bg-white" ref={form.ref}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.8fr_1fr] gap-8 lg:gap-12">
+        <div className="max-w-3xl mx-auto">
 
-          {/* ── Left: Form ── */}
-          <div className={`transition-all duration-700 ${form.inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          {/* Form — full width */}
+          <div className={`transition-all duration-700 ${form.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {submitted ? (
               <div className="bg-gray-50 border border-[#E8231A]/20 rounded-2xl p-12 text-center">
                 <div className="w-16 h-16 bg-[#E8231A]/8 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">🎯</span>
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Poppins' }}>
+                <h3 className="text-3xl font-extrabold text-gray-900 mb-3" style={{ fontFamily: 'Poppins' }}>
                   Message received!
                 </h3>
-                <p className="text-gray-500 leading-relaxed">
+                <p className="text-gray-500 leading-relaxed mb-4">
                   Thanks for reaching out. We&apos;ll review your brief and be in touch
                   within 24 hours with some initial thoughts.
+                </p>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  📩 We&apos;ve also sent our company deck to your email — check your inbox (and spam, just in case).
                 </p>
               </div>
             ) : (
               <div className="bg-white border border-gray-200 rounded-2xl p-7 lg:p-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'Poppins' }}>
+                <h2 className="text-3xl font-black text-gray-900 mb-8" style={{ fontFamily: 'Poppins' }}>
                   Tell us about your brand
                 </h2>
 
@@ -166,7 +197,7 @@ export default function ContactPage() {
                   {/* First name + Last name */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                      <label className="block text-gray-800 text-base font-bold mb-2">
                         First name <span className="text-[#E8231A]">*</span>
                       </label>
                       <input
@@ -175,11 +206,11 @@ export default function ContactPage() {
                         placeholder="First name"
                         value={formData.firstName}
                         onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                      <label className="block text-gray-800 text-base font-bold mb-2">
                         Last name <span className="text-[#E8231A]">*</span>
                       </label>
                       <input
@@ -188,7 +219,7 @@ export default function ContactPage() {
                         placeholder="Last name"
                         value={formData.lastName}
                         onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
                       />
                     </div>
                   </div>
@@ -196,7 +227,7 @@ export default function ContactPage() {
                   {/* Work email + Phone */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                      <label className="block text-gray-800 text-base font-bold mb-2">
                         Work email <span className="text-[#E8231A]">*</span>
                       </label>
                       <input
@@ -205,11 +236,11 @@ export default function ContactPage() {
                         placeholder="you@company.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                      <label className="block text-gray-800 text-base font-bold mb-2">
                         Phone number
                       </label>
                       <input
@@ -217,14 +248,14 @@ export default function ContactPage() {
                         placeholder="+91 XXXXX XXXXX"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
                       />
                     </div>
                   </div>
 
                   {/* Company */}
                   <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                    <label className="block text-gray-800 text-base font-bold mb-2">
                       Company / Brand name <span className="text-[#E8231A]">*</span>
                     </label>
                     <input
@@ -233,7 +264,7 @@ export default function ContactPage() {
                       placeholder="Your brand name"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors"
                     />
                   </div>
 
@@ -263,7 +294,7 @@ export default function ContactPage() {
                   {/* Budget + How did you hear */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                      <label className="block text-gray-800 text-base font-bold mb-2">
                         Monthly marketing budget <span className="text-[#E8231A]">*</span>
                       </label>
                       <div className="relative">
@@ -271,7 +302,7 @@ export default function ContactPage() {
                           required
                           value={budget}
                           onChange={(e) => setBudget(e.target.value)}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors appearance-none cursor-pointer pr-10"
+                          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors appearance-none cursor-pointer pr-10"
                         >
                           <option value="" disabled>Select budget range</option>
                           {budgetOptions.map((b) => (
@@ -282,14 +313,14 @@ export default function ContactPage() {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                      <label className="block text-gray-800 text-base font-bold mb-2">
                         How did you hear about us?
                       </label>
                       <div className="relative">
                         <select
                           value={hearFrom}
                           onChange={(e) => setHearFrom(e.target.value)}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors appearance-none cursor-pointer pr-10"
+                          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors appearance-none cursor-pointer pr-10"
                         >
                           <option value="" disabled>Select source</option>
                           {hearFromOptions.map((o) => (
@@ -303,7 +334,7 @@ export default function ContactPage() {
 
                   {/* Message */}
                   <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                    <label className="block text-gray-800 text-base font-bold mb-2">
                       Tell us about your goals <span className="text-[#E8231A]">*</span>
                     </label>
                     <textarea
@@ -312,16 +343,33 @@ export default function ContactPage() {
                       placeholder="e.g. We're a D2C brand doing ₹30L/month. Our Meta ROAS has been declining and we want to fix performance while also building organic. Looking for a partner who can handle both..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors resize-none"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:border-[#E8231A]/50 focus:bg-white transition-colors resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full inline-flex items-center justify-center gap-2 bg-[#E8231A] text-white font-semibold py-4 rounded-full hover:bg-gray-900 transition-colors duration-200 text-base"
+                    disabled={submitting}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-[#E8231A] text-white font-black text-lg py-5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:animate-none"
                   >
-                    Request My Free Strategy Call <ArrowUpRight size={18} />
+                    {submitting ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+                        Sending…
+                      </>
+                    ) : (
+                      <>Request My Free Strategy Call <ArrowUpRight size={18} /></>
+                    )}
                   </button>
+
+                  {submitError && (
+                    <p className="text-[#E8231A] text-sm font-medium text-center bg-[#E8231A]/5 border border-[#E8231A]/20 rounded-xl px-4 py-3">
+                      {submitError}
+                    </p>
+                  )}
 
                   <p className="text-gray-400 text-xs text-center">
                     We respond within 24 hours on business days. Your information is never shared with third parties.
@@ -331,79 +379,6 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* ── Right: Dark info card ── */}
-          <div className={`transition-all duration-700 delay-200 ${form.inView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="lg:sticky lg:top-28 bg-[#111111] rounded-2xl p-7 text-white space-y-7">
-
-              {/* Contact details */}
-              <div>
-                <h3 className="text-white font-semibold text-base mb-5">Contact details</h3>
-                <div className="space-y-4">
-                  {[
-                    { icon: Mail,     label: 'Email',         value: 'hello@socialkutlet.com' },
-                    { icon: Phone,    label: 'Phone',         value: '+91 XXXXX XXXXX' },
-                    { icon: MapPin,   label: 'Location',      value: 'Mumbai, India' },
-                    { icon: Clock,    label: 'Response time', value: 'Within 24 hours on business days' },
-                  ].map(({ icon: Icon, label, value }) => (
-                    <div key={label} className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                        <Icon size={14} className="text-white/70" />
-                      </div>
-                      <div>
-                        <p className="text-white/50 text-xs mb-0.5">{label}</p>
-                        <p className="text-white text-sm leading-snug">{value}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Follow us */}
-              <div>
-                <h3 className="text-white font-semibold text-base mb-4">Follow us</h3>
-                <div className="flex gap-3">
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-[#E8231A] transition-colors duration-200"
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin size={16} className="text-white" />
-                  </a>
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-[#E8231A] transition-colors duration-200"
-                    aria-label="Instagram"
-                  >
-                    <Instagram size={16} className="text-white" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="border-t border-white/10" />
-
-              {/* What happens after submit */}
-              <div>
-                <h3 className="text-white font-semibold text-base mb-4">What happens after you submit</h3>
-                <div className="space-y-4">
-                  {afterSubmitSteps.map((step, i) => (
-                    <div key={i} className="flex gap-3">
-                      <div className="w-6 h-6 bg-[#E8231A] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-white text-xs font-bold">{i + 1}</span>
-                      </div>
-                      <div>
-                        <p className="text-white text-sm font-semibold leading-snug mb-1">{step.title}</p>
-                        <p className="text-white/60 text-xs leading-relaxed">{step.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -411,11 +386,11 @@ export default function ContactPage() {
       <section className="py-20 px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-[#E8231A]/8 border border-[#E8231A]/15 text-[#E8231A] text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#E8231A]/8 border border-[#E8231A]/15 text-[#E8231A] text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
               <Calendar size={12} />
               Book a Call
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>
               Prefer to talk directly?
             </h2>
             <p className="text-gray-500 text-base max-w-md mx-auto">

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -9,8 +9,8 @@
   --accent: #E8231A;
   --accent-dim: rgba(232, 35, 26, 0.08);
   --text: #0A0A0A;
-  --text-muted: #888888;
-  --text-secondary: #AAAAAA;
+  --text-muted: #666666;
+  --text-secondary: #888888;
 }
 
 @theme inline {
@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 @layer base {
@@ -40,7 +41,7 @@ html {
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', system-ui, sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
@@ -84,6 +85,19 @@ html {
 /* Horizontal scroll section */
 .horizontal-scroll::-webkit-scrollbar { display: none; }
 .horizontal-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* CTA blink animation */
+@keyframes ctaBlink {
+  0%, 100% { background-color: #E8231A; box-shadow: 0 0 0 0 rgba(232, 35, 26, 0.45); }
+  50% { background-color: #c41810; box-shadow: 0 0 0 10px rgba(232, 35, 26, 0); }
+}
+.cta-blink {
+  animation: ctaBlink 1.8s ease-in-out infinite;
+}
+.cta-blink:hover {
+  animation: none;
+  background-color: #111827;
+}
 
 /* Floating animation for hero shapes */
 @keyframes floatA {

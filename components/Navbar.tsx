@@ -31,7 +31,7 @@ const services = {
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services', hasDropdown: true },
-  { label: 'Strategy', href: '/strategy' },
+  { label: 'Content Marketing', href: '/content-marketing' },
   { label: 'Case Study', href: '/case-study' },
   { label: 'Contact', href: '/contact' },
 ];
@@ -71,7 +71,7 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-20 md:h-24">
           {/* Logo — file: public/logos/brand-logo.png */}
           <Link href="/" className="flex items-center">
             <Image
@@ -79,13 +79,13 @@ export default function Navbar() {
               alt="Social Kutlet"
               width={480}
               height={120}
-              className="object-contain h-20 w-auto max-w-[420px]"
+              className="object-contain h-11 md:h-13 w-auto max-w-52"
               priority
             />
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-2">
             {navLinks.map((link) =>
               link.hasDropdown ? (
                 <div
@@ -97,10 +97,11 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={closeMenus}
-                    className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                    style={{ fontFamily: 'Poppins' }}
+                    className={`flex items-center gap-1 px-5 py-2.5 text-base font-bold rounded-full transition-all duration-200 ${
                       pathname === link.href
                         ? 'text-[#E8231A]'
-                        : 'text-gray-500 hover:text-gray-900'
+                        : 'text-gray-900 hover:text-[#E8231A]'
                     }`}
                   >
                     {link.label}
@@ -121,7 +122,7 @@ export default function Navbar() {
                     <div className="bg-white border border-gray-200 rounded-2xl p-6 grid grid-cols-3 gap-6 shadow-xl shadow-black/5">
                     {Object.entries(services).map(([category, items]) => (
                       <div key={category}>
-                        <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-3">
+                        <p className="text-[#E8231A] text-xs font-black uppercase tracking-widest mb-3">
                           {category}
                         </p>
                         <ul className="space-y-2">
@@ -130,7 +131,7 @@ export default function Navbar() {
                               <Link
                                 href="/services"
                                 onClick={closeMenus}
-                                className="text-gray-500 hover:text-gray-900 text-sm transition-colors duration-150 block py-0.5"
+                                className="text-gray-700 hover:text-[#E8231A] text-sm font-semibold transition-colors duration-150 block py-0.5"
                               >
                                 {item}
                               </Link>
@@ -147,10 +148,11 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={closeMenus}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                  style={{ fontFamily: 'Poppins' }}
+                  className={`px-5 py-2.5 text-base font-bold rounded-full transition-all duration-200 ${
                     pathname === link.href
                       ? 'text-[#E8231A]'
-                      : 'text-gray-500 hover:text-gray-900'
+                      : 'text-gray-900 hover:text-[#E8231A]'
                   }`}
                 >
                   {link.label}
@@ -163,7 +165,8 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
-              className="hidden lg:inline-flex items-center gap-2 bg-[#E8231A] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-gray-900 transition-colors duration-200"
+              style={{ fontFamily: 'Poppins' }}
+              className="hidden lg:inline-flex items-center gap-2 bg-[#E8231A] text-white text-base font-black px-8 py-3.5 rounded-full cta-blink hover:bg-gray-900 transition-colors duration-200 tracking-wide"
             >
               Book a Call
             </Link>
@@ -190,10 +193,11 @@ export default function Navbar() {
               <Link
                 href={link.href}
                 onClick={closeMenus}
-                className={`block px-4 py-3 text-base font-medium rounded-xl transition-colors ${
+                style={{ fontFamily: 'Poppins' }}
+                className={`block px-4 py-3 text-lg font-bold rounded-xl transition-colors ${
                   pathname === link.href
                     ? 'text-[#E8231A] bg-[#E8231A]/5'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    : 'text-gray-900 hover:text-[#E8231A] hover:bg-gray-50'
                 }`}
               >
                 {link.label}
@@ -202,7 +206,7 @@ export default function Navbar() {
                 <div className="ml-4 mt-2 space-y-4 pb-2">
                   {Object.entries(services).map(([category, items]) => (
                     <div key={category}>
-                      <p className="text-[#E8231A] text-xs font-semibold uppercase tracking-widest mb-2 px-4">
+                      <p className="text-[#E8231A] text-xs font-extrabold uppercase tracking-widest mb-2 px-4">
                         {category}
                       </p>
                       {items.map((item) => (
@@ -210,7 +214,7 @@ export default function Navbar() {
                           key={item}
                           href="/services"
                           onClick={closeMenus}
-                          className="block px-4 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                          className="block px-4 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                         >
                           {item}
                         </Link>
@@ -225,7 +229,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               onClick={closeMenus}
-              className="block text-center bg-[#E8231A] text-white font-semibold py-3 rounded-full"
+              className="block text-center bg-[#E8231A] text-white font-black text-lg py-5 rounded-full cta-blink"
             >
               Book a Call
             </Link>
